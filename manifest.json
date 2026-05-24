@@ -1,0 +1,52 @@
+{
+  "manifest_version": 3,
+  "name": "Reword",
+  "version": "1.0.0",
+  "description": "Humanize AI-written text. Side-by-side comparison and instant text replacement.",
+  "permissions": [
+    "storage",
+    "activeTab",
+    "identity",
+    "tabs"
+  ],
+  "host_permissions": [
+    "https://clerk.dev/*",
+    "https://*.clerk.accounts.dev/*",
+    "https://*.supabase.co/*"
+  ],
+  "icons": {
+    "16": "icon16.png",
+    "32": "icon32.png",
+    "48": "icon48.png",
+    "128": "icon128.png"
+  },
+  "action": {
+    "default_popup": "popup.html",
+    "default_icon": {
+      "16": "icon16.png",
+      "32": "icon32.png",
+      "48": "icon48.png",
+      "128": "icon128.png"
+    }
+  },
+  "background": {
+    "service_worker": "background.js",
+    "type": "module"
+  },
+  "content_scripts": [
+    {
+      "matches": ["http://*/*", "https://*/*"],
+      "js": ["content.js"],
+      "run_at": "document_end"
+    }
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": ["auth.html"],
+      "matches": ["<all_urls>"]
+    }
+  ],
+  "content_security_policy": {
+    "extension_pages": "script-src 'self'; object-src 'self'"
+  }
+}

@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Literata:wght@600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        body {
+            background-color: #FDFCFB;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        /* Custom scrollbar for the textarea */
+        textarea::-webkit-scrollbar {
+            width: 4px;
+        }
+        textarea::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        textarea::-webkit-scrollbar-thumb {
+            background: #E8DED3;
+            border-radius: 10px;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-secondary-container": "#19724f",
+                        "on-error": "#ffffff",
+                        "primary-fixed-dim": "#a5d0b9",
+                        "on-background": "#1a1c1a",
+                        "surface-dim": "#d9dad7",
+                        "on-error-container": "#93000a",
+                        "on-secondary": "#ffffff",
+                        "on-tertiary": "#ffffff",
+                        "on-tertiary-container": "#93ad98",
+                        "outline": "#717973",
+                        "on-tertiary-fixed-variant": "#354c3b",
+                        "tertiary-fixed": "#cee9d3",
+                        "secondary-fixed": "#a0f4c8",
+                        "secondary-container": "#edeeea",
+                        "tertiary-container": "#2a4131",
+                        "on-primary-fixed-variant": "#274e3d",
+                        "surface-container-low": "#f3f4f0",
+                        "secondary": "#0e6c4a",
+                        "on-primary-fixed": "#002114",
+                        "primary": "#1b4332",
+                        "error-container": "#ffdad6",
+                        "surface-container": "#edeeea",
+                        "tertiary": "#152b1c",
+                        "surface-container-highest": "#e2e3df",
+                        "on-secondary-fixed": "#002113",
+                        "inverse-primary": "#a5d0b9",
+                        "surface-container-high": "#e7e9e5",
+                        "tertiary-fixed-dim": "#b3cdb7",
+                        "on-surface": "#1a1c1a",
+                        "surface-variant": "#e2e3df",
+                        "surface-bright": "#f9faf6",
+                        "outline-variant": "#c1c8c2",
+                        "on-secondary-fixed-variant": "#005236",
+                        "on-primary-container": "#86af99",
+                        "on-primary": "#ffffff",
+                        "background": "#f9faf6",
+                        "inverse-surface": "#2e312f",
+                        "error": "#ba1a1a",
+                        "secondary-fixed-dim": "#85d7ad",
+                        "surface": "#f9faf6",
+                        "on-tertiary-fixed": "#092012",
+                        "primary-container": "#1b4332",
+                        "inverse-on-surface": "#f0f1ed",
+                        "surface-container-lowest": "#ffffff",
+                        "on-surface-variant": "#414844",
+                        "primary-fixed": "#c1ecd4",
+                        "surface-tint": "#3f6653"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "base": "4px",
+                        "lg": "24px",
+                        "md": "16px",
+                        "max-width": "380px",
+                        "sm": "8px",
+                        "xs": "4px",
+                        "xl": "32px"
+                    },
+                    "fontFamily": {
+                        "label-md": ["Inter"],
+                        "headline-md": ["Literata"],
+                        "label-sm": ["Inter"],
+                        "body-lg": ["Inter"],
+                        "body-md": ["Inter"],
+                        "headline-lg": ["Literata"]
+                    },
+                    "fontSize": {
+                        "label-md": ["12px", {"lineHeight": "16px", "letterSpacing": "0.02em", "fontWeight": "600"}],
+                        "headline-md": ["18px", {"lineHeight": "24px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                        "headline-md-mobile": ["18px", {"lineHeight": "24px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                        "label-sm": ["11px", {"lineHeight": "14px", "fontWeight": "500"}],
+                        "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                        "headline-lg": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.02em", "fontWeight": "700"}]
+                    }
+                },
+            },
+        }
+    </script>
+</head>
+<body class="bg-surface font-body-md text-on-surface flex justify-center items-start min-h-screen pt-md">
+<!-- App Container (Fixed Width Mandate) -->
+<main class="w-full max-w-max-width bg-surface-container-lowest min-h-[560px] flex flex-col shadow-[0px_4px_12px_rgba(45,45,45,0.05)] overflow-hidden relative">
+<!-- Header: TopAppBar -->
+<header class="bg-surface border-b border-secondary-container flex justify-between items-center w-full px-md py-sm sticky top-0 z-20">
+<h1 class="font-headline-md text-headline-md text-secondary font-bold tracking-tight">Reword</h1>
+<div class="flex items-center gap-sm">
+<button aria-label="Settings" class="p-xs rounded-full hover:bg-surface-container-low transition-colors active:scale-95 duration-150">
+<span class="material-symbols-outlined text-on-surface-variant" data-icon="settings">settings</span>
+</button>
+</div>
+</header>
+<!-- Main Content Area -->
+<section class="flex-grow p-md flex flex-col gap-lg bg-[#FDFCFB]">
+<!-- Editor Container -->
+<div class="flex-grow flex flex-col">
+<div class="relative flex-grow group">
+<textarea class="w-full h-64 p-md rounded-xl border-secondary-container border focus:border-secondary focus:ring-1 focus:ring-secondary bg-surface-container-lowest font-body-md text-on-surface placeholder:text-on-surface-variant/50 resize-none transition-all shadow-sm focus:shadow-md" id="textInput" placeholder="Paste your text here to refine your voice..."></textarea>
+<!-- Tactile visual cue: Corner drag handles (visual only) -->
+<div class="absolute bottom-2 right-2 pointer-events-none opacity-20">
+<span class="material-symbols-outlined text-xs">drag_handle</span>
+</div>
+</div>
+</div>
+<!-- Action Block -->
+<div class="flex flex-col items-center gap-sm mt-auto">
+<button class="w-full py-md px-lg bg-secondary text-on-secondary font-headline-md text-headline-md rounded-lg shadow-md hover:shadow-lg hover:bg-primary transition-all active:scale-95 duration-150 flex justify-center items-center gap-sm" onclick="handleRewrite()">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">auto_fix_high</span>
+                    De-AI This
+                </button>
+<!-- Usage Indicator -->
+<div class="flex items-center gap-xs">
+<span class="material-symbols-outlined text-[14px] text-on-secondary-container">bolt</span>
+<p class="font-label-md text-label-md text-on-secondary-container">
+                        2 of 3 free uses left
+                    </p>
+</div>
+</div>
+<!-- AI Insight Mini-Card (Contextual Feature) -->
+<div class="p-sm rounded-lg bg-surface-container-low border border-secondary-container/50 flex items-start gap-sm">
+<span class="material-symbols-outlined text-secondary text-[20px] mt-0.5">info</span>
+<p class="font-label-sm text-label-sm text-on-surface-variant leading-relaxed">
+                    Reword identifies robotic sentence structures and replaces them with a more human, editorial tone.
+                </p>
+</div>
+</section>
+<!-- Footer: Global Metadata -->
+<footer class="bg-surface-container-low border-t border-secondary-container flex justify-between items-center w-full px-md py-xs mt-auto">
+<span class="font-label-sm text-label-sm text-on-surface-variant">v1.2.4 • Status: Ready</span>
+<div class="flex items-center gap-xs text-on-surface-variant font-label-sm text-label-sm">
+<span class="material-symbols-outlined text-[12px]">data_usage</span>
+<span>Usage: 14/50</span>
+</div>
+</footer>
+<!-- Micro-Interaction feedback overlay -->
+<div class="hidden absolute inset-0 bg-surface/80 backdrop-blur-sm z-50 flex flex-col items-center justify-center gap-md" id="loadingOverlay">
+<div class="w-8 h-8 border-4 border-secondary/20 border-t-secondary rounded-full animate-spin"></div>
+<p class="font-headline-md text-headline-md text-secondary animate-pulse">Humanizing...</p>
+</div>
+</main>
+<script>
+        function handleRewrite() {
+            const textarea = document.getElementById('textInput');
+            const overlay = document.getElementById('loadingOverlay');
+            
+            if (!textarea.value.trim()) {
+                textarea.classList.add('border-error');
+                setTimeout(() => textarea.classList.remove('border-error'), 1000);
+                return;
+            }
+
+            overlay.classList.remove('hidden');
+            
+            // Simulating a processing delay
+            setTimeout(() => {
+                overlay.classList.add('hidden');
+                // Potential logic to update the text or transition screen
+            }, 1800);
+        }
+
+        // Add focus effects
+        const textarea = document.getElementById('textInput');
+        textarea.addEventListener('focus', () => {
+            textarea.parentElement.classList.add('scale-[1.01]');
+        });
+        textarea.addEventListener('blur', () => {
+            textarea.parentElement.classList.remove('scale-[1.01]');
+        });
+    </script>
+</body></html>
