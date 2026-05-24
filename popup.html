@@ -10,8 +10,8 @@
     /* Design Tokens */
     :root {
       --bg-color: #f9faf6;
-      --primary-color: #1b4332; /* Forest green */
-      --primary-hover: #122e22;
+      --primary-color: #143e2f; /* Darker green for UI */
+      --primary-hover: #0f2e22;
       --text-white: #ffffff;
       --text-dark: #1b1c1a;
       --text-muted: #414844;
@@ -354,19 +354,19 @@
       padding: 16px 0;
     }
     .branding-icon {
-      width: 60px;
-      height: 60px;
+      width: 54px;
+      height: 54px;
       background-color: var(--primary-color);
-      border-radius: var(--border-radius-card);
+      border-radius: 12px;
       display: flex;
       align-items: center;
       justify-content: center;
-      box-shadow: var(--shadow-md);
     }
     .branding-icon span {
       color: var(--text-white);
+      font-family: 'Literata', serif;
       font-size: 32px;
-      font-variation-settings: 'FILL' 1;
+      font-weight: 700;
     }
     .settings-card {
       background-color: var(--card-bg);
@@ -386,11 +386,22 @@
       align-items: center;
       gap: 4px;
     }
+    .settings-input-wrapper {
+      position: relative;
+    }
+    .settings-input-wrapper .material-symbols-outlined {
+      position: absolute;
+      left: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-muted);
+      font-size: 18px;
+    }
     .settings-input {
       width: 100%;
       border: 1px solid var(--border-color);
       border-radius: var(--border-radius-btn);
-      padding: 10px 12px;
+      padding: 10px 12px 10px 38px;
       font-size: 13px;
       font-family: 'Inter', sans-serif;
       transition: border-color 0.2s ease, box-shadow 0.2s ease;
@@ -421,12 +432,87 @@
     .manage-account-left {
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 12px;
       font-size: 13px;
       font-weight: 600;
       color: var(--text-dark);
     }
     .manage-account-left span {
+      color: var(--text-dark);
+    }
+    
+    .free-tier-card {
+      background-color: var(--card-bg);
+      border-radius: var(--border-radius-card);
+      padding: 16px;
+      border: 1px solid rgba(193, 200, 194, 0.3);
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-top: 16px;
+    }
+    .free-tier-header {
+      font-family: 'Literata', serif;
+      font-weight: 700;
+      font-size: 16px;
+      color: var(--text-dark);
+    }
+    .free-tier-stats {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 12px;
+    }
+    .free-tier-stats .label {
+      color: var(--text-muted);
+    }
+    .free-tier-stats .value {
+      font-weight: 700;
+      color: var(--text-dark);
+    }
+    .progress-bar-bg {
+      height: 6px;
+      background-color: #f0f0f0;
+      border-radius: 3px;
+      width: 100%;
+      overflow: hidden;
+    }
+    .progress-bar-fill {
+      height: 100%;
+      background-color: var(--primary-color);
+      border-radius: 3px;
+      transition: width 0.3s ease;
+    }
+    
+    .user-profile-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+    .user-avatar {
+      width: 40px;
+      height: 40px;
+      background-color: var(--primary-color);
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: white;
+      font-weight: 700;
+      font-size: 14px;
+    }
+    .user-info-text {
+      display: flex;
+      flex-direction: column;
+    }
+    .user-info-name {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text-dark);
+    }
+    .user-info-email {
+      font-size: 11px;
       color: var(--text-muted);
     }
 
@@ -715,26 +801,29 @@
       <main class="content">
         <div class="branding-section">
           <div class="branding-icon">
-            <span class="material-symbols-outlined">auto_fix_high</span>
+            <span>R</span>
           </div>
         </div>
         <div class="settings-card">
-          <label for="license-key-input">
-            <span class="material-symbols-outlined" style="font-size: 14px;">key</span>
+          <label for="license-key-input" style="color: var(--text-dark);">
+            <span class="material-symbols-outlined" style="font-size: 16px;">lock</span>
             License Key
           </label>
-          <input type="text" id="license-key-input" class="settings-input" placeholder="XXXX-XXXX-XXXX-XXXX" />
+          <div class="settings-input-wrapper">
+            <input type="text" id="license-key-input" class="settings-input" style="padding-left:12px;" placeholder="XXXX - XXXX - XXXX - XXXX" />
+          </div>
           <p class="settings-desc">Unlock premium AI features and increase your monthly usage limit.</p>
           <button id="btn-activate" class="btn-primary" style="margin-top: 8px;">
             Activate Pro ⚡
           </button>
         </div>
-        <div id="row-manage-account" class="manage-account-row">
+        
+        <div id="row-manage-account" class="settings-card" style="margin-top: 16px; flex-direction: row; justify-content: space-between; align-items: center; cursor: pointer;">
           <div class="manage-account-left">
-            <span class="material-symbols-outlined">account_circle</span>
+            <span class="material-symbols-outlined" style="font-weight: 300;">person</span>
             <span>Manage Account</span>
           </div>
-          <span class="material-symbols-outlined" style="color: var(--text-muted);">chevron_right</span>
+          <span class="material-symbols-outlined" style="color: var(--text-muted); font-size: 18px;">chevron_right</span>
         </div>
       </main>
       <footer class="footer">
@@ -750,13 +839,14 @@
       </header>
       <main class="content" style="justify-content: center;">
         <div class="upgrade-card" style="padding: 32px 20px;">
-          <div class="upgrade-icon-wrapper" style="margin-bottom: 8px;">
-            <span class="material-symbols-outlined main-icon" style="font-size: 40px; color: var(--primary-color);">lock</span>
+          <div class="branding-icon" style="margin-bottom: 8px;">
+            <span>R</span>
           </div>
           <h2 style="font-size: 18px; font-weight: 700; color: var(--text-dark); margin-bottom: 4px;">Sign in to use Reword</h2>
           <button id="btn-auth-signin" class="btn-primary" style="width: 100%; margin-top: 16px;">
-            Sign In / Sign Up
+            Sign In
           </button>
+          <a id="btn-auth-signup" href="#" style="display: block; margin-top: 16px; font-size: 13px; color: var(--text-muted); text-decoration: none;">Create account &rarr;</a>
         </div>
       </main>
     </div>
@@ -814,6 +904,7 @@
     </div>
 
   </div>
-  <script src="popup.js"></script>
+  <script src="supabase.js"></script>
+  <script type="module" src="popup.js"></script>
 </body>
 </html>

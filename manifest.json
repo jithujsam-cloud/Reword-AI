@@ -10,8 +10,6 @@
     "tabs"
   ],
   "host_permissions": [
-    "https://clerk.dev/*",
-    "https://*.clerk.accounts.dev/*",
     "https://*.supabase.co/*"
   ],
   "icons": {
@@ -38,14 +36,14 @@
       "matches": ["http://*/*", "https://*/*"],
       "js": ["content.js"],
       "run_at": "document_end"
-    }
-  ],
-  "web_accessible_resources": [
+    },
     {
-      "resources": ["auth.html"],
-      "matches": ["<all_urls>"]
+      "matches": ["https://clospect.online/*"],
+      "js": ["session-bridge.js"],
+      "run_at": "document_idle"
     }
   ],
+  "web_accessible_resources": [],
   "content_security_policy": {
     "extension_pages": "script-src 'self'; object-src 'self'"
   }

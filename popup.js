@@ -1,9 +1,11 @@
+import { SUPABASE_URL, SUPABASE_ANON_KEY, OPENAI_API_KEY } from './config.js';
+
 // Configuration and state variables
-const SUPABASE_URL = "https://zhoueuqnmtjskbiwnkzu.supabase.co";
-const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inpob3VldXFubXRqc2tiaXdua3p1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk1MjMzNDQsImV4cCI6MjA5NTA5OTM0NH0.7TZmr048orxLcAdqQrOaihvfAOEw4xGYpMaZviw-z-g";
 const DODO_PAYMENT_LINK = "https://dodo.pe/zqg57npt9js";
-let clerkUserId = null;
-let clerkEmail = null;
+const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+let supabaseUserId = null;
+let userEmail = null;
 let rewritesLimit = 3;
 let usageCount = 0;
 let licenseKey = "";
@@ -101,41 +103,56 @@ document.addEventListener("DOMContentLoaded", () => {
   // Hide all screens explicitly first
   screenMain.classList.add("hidden");
   
-  // 1. Check Auth Storage
-  chrome.storage.local.get(["clerk_user_id", "clerk_email", "plan", "rewrites_used", "rewrites_limit", "payment_status", "licenseKey"], (result) => {
-    clerkUserId = result.clerk_user_id;
-    clerkEmail = result.clerk_email;
+  chrome.storage.local.get(["supabase_user_id", "user_email", "plan", "rewrites_used", "rewrites_limit", "payment_status", "licenseKey"], async (result) => {
+    supabaseUserId = result.supabase_user_id;
+    userEmail = result.user_email;
     
-    // IF NOT LOGGED IN
-    if (!clerkUserId) {
+    // Verify session is still valid
+    const { data: { session } } = await supabase.auth.getSession();
+    
+    if (supabaseUserId && session) {
+      showScreen("screen-main");
+      loadUserDataAndSupabase(result);
+    } else {
       showScreen("screen-auth");
-      return; // CRITICAL RULE 2: Synchronous blocking. Do not load anything else.
     }
-    
-    // IF LOGGED IN
-    showScreen("screen-main");
-    loadUserDataAndSupabase(result);
   });
 
   // 2. Auth Page Navigation Listener
   document.getElementById("btn-auth-signin").addEventListener("click", () => {
-    chrome.tabs.create({ url: chrome.runtime.getURL("auth.html") });
+    chrome.tabs.create({ url: "https://clospect.online/signin.html" });
   });
 
-  // CRITICAL RULE 3: Listen for AUTH_SUCCESS message
+  document.getElementById("btn-auth-signup").addEventListener("click", (e) => {
+    e.preventDefault();
+    chrome.tabs.create({ url: "https://clospect.online/signup.html" });
+  });
+
+  // 3. Listen for AUTH_SUCCESS or SESSION_FROM_WEBSITE messages
   chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     if (message.type === 'AUTH_SUCCESS') {
-      clerkUserId = message.userId;
-      clerkEmail = message.email;
-      
-      // Save it properly
-      chrome.storage.local.set({ clerk_user_id: clerkUserId, clerk_email: clerkEmail });
-      
-      // Hide auth prompt, show main screen immediately
-      showScreen("screen-main");
-      
-      // Fetch user data from Supabase
-      fetchSupabaseData();
+      chrome.storage.local.get(["supabase_user_id", "user_email", "plan", "rewrites_used", "rewrites_limit", "payment_status", "licenseKey"], (result) => {
+        supabaseUserId = result.supabase_user_id;
+        userEmail = result.user_email;
+        showScreen("screen-main");
+        loadUserDataAndSupabase(result);
+      });
+    } else if (message.type === 'SESSION_FROM_WEBSITE') {
+      const session = message.session;
+      if (session && session.user) {
+        chrome.storage.local.set({
+          supabase_user_id: session.user.id,
+          user_email: session.user.email
+        }, () => {
+          supabaseUserId = session.user.id;
+          userEmail = session.user.email;
+          showScreen("screen-main");
+          // fetch user profile data and update UI
+          chrome.storage.local.get(["plan", "rewrites_used", "rewrites_limit", "payment_status", "licenseKey"], (result) => {
+            loadUserDataAndSupabase(result);
+          });
+        });
+      }
     }
   });
 
@@ -233,7 +250,7 @@ function loadUserDataAndSupabase(result) {
   }
   
   updateUsageDisplay();
-  injectSettingsContent(clerkEmail, isPro);
+  injectSettingsContent(userEmail, isPro);
   fetchSupabaseData();
   
   // Step 5: Free User Hits Limit logic
@@ -243,14 +260,15 @@ function loadUserDataAndSupabase(result) {
 }
 
 async function fetchSupabaseData() {
-  if (!clerkUserId) return;
+  if (!supabaseUserId) return;
   try {
-    const res = await fetch(`${SUPABASE_URL}/rest/v1/users?clerk_user_id=eq.${clerkUserId}&select=*`, {
-      headers: { "apikey": SUPABASE_ANON_KEY, "Authorization": `Bearer ${SUPABASE_ANON_KEY}` }
-    });
-    const data = await res.json();
-    if (data && data.length > 0) {
-      const userRow = data[0];
+    const { data: userRow, error } = await supabase
+      .from('users')
+      .select('*')
+      .eq('supabase_user_id', supabaseUserId)
+      .single();
+      
+    if (userRow && !error) {
       chrome.storage.local.set({
         plan: userRow.plan,
         rewrites_used: userRow.rewrites_used,
@@ -263,7 +281,7 @@ async function fetchSupabaseData() {
       isPro = (userRow.plan === 'pro') || (licenseKeyInput.value && licenseKeyInput.value.trim().length >= 16);
       
       updateUsageDisplay();
-      injectSettingsContent(clerkEmail, isPro);
+      injectSettingsContent(userEmail, isPro);
       
       if (!isPro && usageCount >= rewritesLimit) {
         showScreen("screen-upgrade");
@@ -317,12 +335,6 @@ function handleDeAI() {
     return;
   }
 
-  // CRITICAL RULE 4: Free users must never be able to run a rewrite after using all 3.
-  if (!clerkUserId) {
-    showScreen("screen-auth");
-    return;
-  }
-
   if (!isPro && usageCount >= rewritesLimit) {
     showScreen("screen-upgrade");
     return;
@@ -348,17 +360,13 @@ function handleDeAI() {
           chrome.storage.local.set({ rewrites_used: usageCount }, () => {
             updateUsageDisplay();
           });
-          
-          if (clerkUserId) {
-            fetch(`${SUPABASE_URL}/rest/v1/users?clerk_user_id=eq.${clerkUserId}`, {
-              method: "PATCH",
-              headers: { 
-                "Content-Type": "application/json",
-                "apikey": SUPABASE_ANON_KEY, 
-                "Authorization": `Bearer ${SUPABASE_ANON_KEY}` 
-              },
-              body: JSON.stringify({ rewrites_used: usageCount })
-            }).catch(console.error);
+          if (supabaseUserId) {
+            supabase.from('users')
+              .update({ rewrites_used: usageCount })
+              .eq('supabase_user_id', supabaseUserId)
+              .then(({ error }) => {
+                if (error) console.error("Update rewrites error", error);
+              });
           }
         }
 
@@ -430,73 +438,104 @@ function handleActivatePro() {
 }
 
 function injectSettingsContent(email, isPremium) {
-  let userInfoDiv = document.getElementById("auth-user-info");
-  if (!userInfoDiv) {
-    userInfoDiv = document.createElement('div');
-    userInfoDiv.id = "auth-user-info";
-    userInfoDiv.className = "settings-card";
-    userInfoDiv.style.marginTop = "16px";
+  let settingsMain = document.querySelector('#screen-settings main');
+  
+  // Clear any dynamically added sections
+  const oldProfile = document.getElementById("user-profile-section");
+  const oldFreeTier = document.getElementById("free-tier-section");
+  if (oldProfile) oldProfile.remove();
+  if (oldFreeTier) oldFreeTier.remove();
+  
+  // The License Key box
+  const licenseCard = document.querySelectorAll('.settings-card')[0]; 
+  if (supabaseUserId) {
+    if (licenseCard) licenseCard.style.display = 'none';
+  } else {
+    if (licenseCard) licenseCard.style.display = 'flex';
+  }
+  
+  // User Profile Section (only if logged in)
+  if (supabaseUserId) {
+    const profileSection = document.createElement('div');
+    profileSection.id = "user-profile-section";
+    profileSection.className = "free-tier-card"; 
     
-    const settingsMain = document.querySelector('#screen-settings main');
-    settingsMain.appendChild(userInfoDiv);
+    // Extract initials from email or name
+    let initials = email ? email.substring(0, 2).toUpperCase() : "U";
+    let name = email ? email.split('@')[0] : "User";
     
-    const signoutDiv = document.createElement('div');
-    signoutDiv.style.marginTop = "16px";
-    signoutDiv.style.borderTop = "1px solid rgba(193, 200, 194, 0.3)";
-    signoutDiv.style.paddingTop = "16px";
+    profileSection.innerHTML = `
+      <div class="user-profile-header">
+        <div class="user-avatar">${initials}</div>
+        <div class="user-info-text">
+          <span class="user-info-name">${name}</span>
+          <span class="user-info-email">${email || ''}</span>
+        </div>
+      </div>
+      <button id="btn-signout" class="btn-secondary" style="width: 100%;">Sign Out</button>
+    `;
     
-    const signoutBtn = document.createElement('button');
-    signoutBtn.id = "btn-signout";
-    signoutBtn.className = "btn-secondary";
-    signoutBtn.style.width = "100%";
-    signoutBtn.style.backgroundColor = "transparent";
-    signoutBtn.style.border = "1px solid var(--border-color)";
-    signoutBtn.style.padding = "10px";
-    signoutBtn.style.borderRadius = "var(--border-radius-btn)";
-    signoutBtn.style.cursor = "pointer";
-    signoutBtn.textContent = "Sign out";
+    settingsMain.appendChild(profileSection);
     
-    // CRITICAL RULE 6: Signing out must clear ALL local storage and immediately show auth prompt
-    signoutBtn.onclick = () => {
+    profileSection.querySelector('#btn-signout').addEventListener('click', async () => {
+      await supabase.auth.signOut();
       chrome.storage.local.clear(() => {
-        clerkUserId = null;
-        clerkEmail = null;
+        supabaseUserId = null;
+        userEmail = null;
         isPro = false;
         usageCount = 0;
         showScreen("screen-auth");
+        injectSettingsContent(null, false);
       });
-    };
+    });
+  }
+  
+  // Free Tier Section
+  if (!isPremium) {
+    const freeTierSection = document.createElement('div');
+    freeTierSection.id = "free-tier-section";
+    freeTierSection.className = "free-tier-card";
     
-    signoutDiv.appendChild(signoutBtn);
-    settingsMain.appendChild(signoutDiv);
-  }
-  
-  userInfoDiv.innerHTML = `
-    <div style="font-weight:600;margin-bottom:8px;font-size:13px;display:flex;align-items:center;justify-content:space-between;">
-      ${email}
-      <span style="font-size:10px;padding:2px 6px;border-radius:4px;background:${isPremium ? '#1b4332' : '#e0e0e0'};color:${isPremium ? 'white' : 'black'};">${isPremium ? 'PRO' : 'FREE'}</span>
-    </div>
-  `;
-  
-  if (isPremium) {
-    userInfoDiv.innerHTML += `
-      <div style="font-size:13px;color:#0e6c4a;margin-bottom:12px;font-weight:600;">Plan: Pro ✓</div>
-      <button id="btn-manage-sub" class="btn-primary" style="background:transparent;border:1px solid var(--border-color);color:var(--text-dark);">Manage subscription &rarr;</button>
+    const fillPercent = Math.min(100, (usageCount / rewritesLimit) * 100);
+    
+    freeTierSection.innerHTML = `
+      <div class="free-tier-header">Free Tier</div>
+      <div class="free-tier-stats">
+        <span class="label">Rewrites used:</span>
+        <span class="value">${usageCount} of ${rewritesLimit}</span>
+      </div>
+      <div class="progress-bar-bg">
+        <div class="progress-bar-fill" style="width: ${fillPercent}%"></div>
+      </div>
+      ${!supabaseUserId 
+        ? `<button id="btn-auth-signup-settings" class="btn-primary" style="margin-top: 4px;">Sign In / Sign Up &rarr;</button>`
+        : `<button id="btn-upgrade-pro" class="btn-primary" style="margin-top: 4px;">Upgrade to Pro &rarr;</button>`
+      }
     `;
-  } else {
-    userInfoDiv.innerHTML += `
-      <div style="font-size:13px;color:var(--text-muted);margin-bottom:12px;">Rewrites used: ${usageCount} of ${rewritesLimit}</div>
-      <button id="btn-upgrade-pro" class="btn-primary">Upgrade to Pro &rarr;</button>
+    
+    settingsMain.appendChild(freeTierSection);
+    
+    if (!supabaseUserId) {
+      freeTierSection.querySelector('#btn-auth-signup-settings').addEventListener("click", () => {
+        chrome.tabs.create({ url: "https://clospect.online/signin.html" });
+      });
+    } else {
+      freeTierSection.querySelector('#btn-upgrade-pro').addEventListener("click", () => {
+        window.open(DODO_PAYMENT_LINK, '_blank');
+      });
+    }
+  } else if (isPremium && supabaseUserId) {
+    const premiumSection = document.createElement('div');
+    premiumSection.id = "free-tier-section"; 
+    premiumSection.className = "free-tier-card";
+    premiumSection.innerHTML = `
+      <div class="free-tier-header" style="color: #0e6c4a;">Premium Active ✨</div>
+      <div style="font-size:13px;color:var(--text-muted);margin-bottom:8px;">You have unlimited access.</div>
+      <button id="btn-manage-sub" class="btn-secondary" style="margin-top: 4px;">Manage subscription &rarr;</button>
     `;
-  }
-
-  const btnManage = document.getElementById("btn-manage-sub");
-  if (btnManage) {
-    btnManage.addEventListener("click", () => window.open(DODO_PAYMENT_LINK, '_blank'));
-  }
-  
-  const btnUpgrade = document.getElementById("btn-upgrade-pro");
-  if (btnUpgrade) {
-    btnUpgrade.addEventListener("click", () => window.open(DODO_PAYMENT_LINK, '_blank'));
+    settingsMain.appendChild(premiumSection);
+    premiumSection.querySelector('#btn-manage-sub').addEventListener("click", () => {
+      window.open(DODO_PAYMENT_LINK, '_blank');
+    });
   }
 }

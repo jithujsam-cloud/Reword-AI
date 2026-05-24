@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard | Reword</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="container nav-content">
+      <a href="/" class="logo">
+        <div class="logo-icon">R</div>
+        Reword
+      </a>
+      <div class="nav-links">
+        <button id="btn-signout" class="btn btn-ghost">Sign Out</button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Dashboard Content -->
+  <div class="dashboard-wrapper" style="display: none;" id="dashboard-content">
+    
+    <!-- User Profile Card -->
+    <div class="card user-profile">
+      <div class="avatar" id="user-avatar">?</div>
+      <div class="user-info">
+        <h2 id="user-email">Loading...</h2>
+        <p id="user-joined">Member since: Loading...</p>
+      </div>
+    </div>
+
+    <!-- Plan Card -->
+    <div class="card" id="plan-card">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+        <h3 style="font-size: 18px;">Your Plan</h3>
+        <span id="plan-badge" class="badge">Loading...</span>
+      </div>
+      <p id="plan-desc" style="color: var(--text-muted); margin-bottom: 24px;">Loading...</p>
+      <div id="plan-action-container">
+        <!-- Button inserted dynamically -->
+      </div>
+    </div>
+
+    <!-- Usage Card -->
+    <div class="card" id="usage-card">
+      <h3 style="font-size: 18px; margin-bottom: 8px;">Usage</h3>
+      <p style="color: var(--text-muted);" id="usage-text">Rewrites used this month: 0 / 3</p>
+      <div class="progress-container">
+        <div class="progress-bar" id="usage-progress" style="width: 0%;"></div>
+      </div>
+    </div>
+
+    <!-- Extension Promo Card -->
+    <div class="card" style="background-color: var(--success-bg); border-color: var(--success-bg);">
+      <h3 style="font-size: 18px; color: var(--success-text); margin-bottom: 8px;">Using the Chrome Extension?</h3>
+      <p style="color: var(--success-text); margin-bottom: 16px;">Your account is automatically synced with the extension.</p>
+      <a href="https://chrome.google.com/webstore" target="_blank" class="btn btn-primary" style="background-color: var(--success-text);">Download Extension &rarr;</a>
+    </div>
+
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script type="module">
+    import { supabase } from './auth.js';
+
+    async function initDashboard() {
+      const { data: { session }, error: sessionError } = await supabase.auth.getSession();
+
+      if (!session) {
+        window.location.href = 'signin.html';
+        return;
+      }
+
+      document.getElementById('dashboard-content').style.display = 'block';
+
+      const user = session.user;
+      document.getElementById('user-email').textContent = user.email;
+      document.getElementById('user-avatar').textContent = user.email.charAt(0).toUpperCase();
+      
+      const joinedDate = new Date(user.created_at).toLocaleDateString('en-US', { year: 'numeric', month: 'short' });
+      document.getElementById('user-joined').textContent = `Member since ${joinedDate}`;
+
+      // Fetch user profile from public.users
+      const { data: profile } = await supabase
+        .from('users')
+        .select('*')
+        .eq('supabase_user_id', user.id)
+        .single();
+
+      const plan = profile?.plan || 'free';
+      const used = profile?.rewrites_used || 0;
+      const limit = profile?.rewrites_limit || 3;
+
+      const planBadge = document.getElementById('plan-badge');
+      const planDesc = document.getElementById('plan-desc');
+      const planAction = document.getElementById('plan-action-container');
+      const usageText = document.getElementById('usage-text');
+      const usageProgress = document.getElementById('usage-progress');
+
+      if (plan === 'free') {
+        planBadge.className = 'badge badge-free';
+        planBadge.textContent = 'Free Plan';
+        planDesc.textContent = '3 rewrites per month';
+        planAction.innerHTML = `<a href="https://dodo.pe/zqg57npt9js" target="_blank" class="btn btn-primary">Upgrade to Pro &rarr;</a>`;
+        
+        usageText.textContent = `Rewrites used this month: ${used} / ${limit}`;
+        usageProgress.style.width = `${Math.min((used / limit) * 100, 100)}%`;
+      } else {
+        planBadge.className = 'badge badge-pro';
+        planBadge.textContent = 'Pro Plan ✓';
+        planDesc.textContent = 'Unlimited rewrites';
+        planAction.innerHTML = `<a href="https://dodo.pe/zqg57npt9js" target="_blank" class="btn btn-ghost">Manage subscription &rarr;</a>`;
+        
+        usageText.textContent = `Rewrites used this month: ${used}`;
+        usageProgress.style.width = `100%`;
+        usageProgress.style.backgroundColor = 'var(--success-text)';
+      }
+    }
+
+    document.getElementById('btn-signout').addEventListener('click', async () => {
+      await supabase.auth.signOut();
+      window.location.href = 'index.html';
+    });
+
+    initDashboard();
+  </script>
+</body>
+</html>
