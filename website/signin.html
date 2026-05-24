@@ -92,6 +92,9 @@
         successEl.classList.remove('hidden');
         document.getElementById('form-signin').style.display = 'none';
 
+        // Notify extension immediately so it has time to grab the token
+        window.postMessage({ type: 'REWORD_AUTH_SUCCESS' }, '*');
+
         setTimeout(() => {
           window.close();
           // Fallback if browser blocks window.close()

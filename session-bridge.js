@@ -27,7 +27,18 @@ getSession();
 
 // Also listen for storage changes in case they log in while extension is open
 window.addEventListener('storage', (e) => {
-  if (e.key && e.key.includes('supabase') && e.key.includes('auth')) {
+  if (e.key && (
+    (e.key.startsWith('sb-') && e.key.endsWith('-auth-token')) ||
+    (e.key.includes('supabase') && e.key.includes('auth'))
+  )) {
+    getSession();
+  }
+});
+
+// The storage event does not fire in the same tab that modifies the storage.
+// So we also listen for a direct message from the website.
+window.addEventListener('message', (event) => {
+  if (event.data && event.data.type === 'REWORD_AUTH_SUCCESS') {
     getSession();
   }
 });
