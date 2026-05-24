@@ -99,6 +99,8 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
       return true;
     }
 
+    const tone = request.tone || "Professional";
+
     // Call OpenAI API
     fetch("https://api.openai.com/v1/chat/completions", {
       method: "POST",
@@ -111,7 +113,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
         messages: [
           {
             role: "system",
-            content: SYSTEM_PROMPT
+            content: SYSTEM_PROMPT + "\n\nCRITICAL OVERRIDE: The user has selected their preferred tone as: " + tone.toUpperCase() + ". You MUST ignore auto-detection and write the rewrite using ONLY the " + tone.toUpperCase() + " rules."
           },
           {
             role: "user",

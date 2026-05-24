@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Manage Account | Reword</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Literata:ital,opsz,wght@0,7..72,600;0,7..72,700;1,7..72,600;1,7..72,700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #f9faf6;
+      --bg-soft: #f5f3f0;
+      --bg-card: #ffffff;
+      --text-primary: #1b1c1a;
+      --text-secondary: #414844;
+      --text-muted: #717973;
+      --green: #143e2f;
+      --green-mid: #0f2e22;
+      --green-light: #e8f5ed;
+      --green-text: #0e6c4a;
+      --border: #c1c8c2;
+      --border-soft: #e2e3e0;
+      --shadow-sm: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+      --shadow-md: 0 4px 16px rgba(0,0,0,0.08), 0 2px 4px rgba(0,0,0,0.04);
+      --shadow-lg: 0 20px 40px rgba(0,0,0,0.08), 0 4px 8px rgba(0,0,0,0.04);
+      --red-bg: #fff5f5;
+      --red-border: #fecaca;
+      --red-text: #dc2626;
+      --red-highlight: #fee2e2;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { background: var(--bg); scroll-behavior: smooth; }
+    body {
+      font-family: 'Inter', sans-serif;
+      color: var(--text-primary);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      background: var(--bg);
+    }
+    a { text-decoration: none; color: var(--green); transition: color 0.2s; }
+    a:hover { color: var(--green-mid); }
+    
+    /* Navbar */
+    nav {
+      background: rgba(255,255,255,0.85);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+      height: 60px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .nav-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 100%;
+    }
+    .nav-left { display: flex; align-items: center; gap: 12px; }
+    .nav-logo-icon {
+      width: 32px; height: 32px; background: var(--green);
+      display: flex; align-items: center; justify-content: center;
+      border-radius: 4px; font-family: 'Literata', serif; font-weight: 700;
+      font-size: 16px; color: white;
+    }
+    .nav-logo-text {
+      font-family: 'Literata', serif; font-weight: 700;
+      font-size: 20px; color: var(--text-primary);
+    }
+
+    /* Page Layout */
+    .container {
+      max-width: 800px;
+      margin: 40px auto 100px;
+      padding: 0 24px;
+    }
+    .page-title {
+      font-family: 'Literata', serif;
+      font-size: 36px;
+      font-weight: 700;
+      margin-bottom: 32px;
+      color: var(--text-primary);
+    }
+    
+    .section-title {
+      font-family: 'Inter', sans-serif;
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 16px;
+      margin-top: 40px;
+    }
+
+    /* Cards */
+    .card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 24px;
+      box-shadow: var(--shadow-sm);
+      margin-bottom: 16px;
+    }
+
+    /* Form Elements */
+    .form-group {
+      margin-bottom: 20px;
+    }
+    .form-group label {
+      display: block;
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--text-secondary);
+      margin-bottom: 6px;
+    }
+    .form-control {
+      width: 100%;
+      padding: 10px 14px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      font-family: 'Inter', sans-serif;
+      font-size: 15px;
+      color: var(--text-primary);
+      background: var(--bg);
+      transition: all 0.2s;
+    }
+    .form-control:focus {
+      outline: none;
+      border-color: var(--green);
+      box-shadow: 0 0 0 3px var(--green-light);
+    }
+    .form-control:disabled {
+      background: var(--bg-soft);
+      color: var(--text-muted);
+      cursor: not-allowed;
+    }
+    select.form-control {
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/200.svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23414844' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 14px center;
+    }
+
+    /* Buttons */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 10px 20px;
+      border-radius: 8px;
+      font-family: 'Inter', sans-serif;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      border: none;
+      transition: all 0.2s;
+    }
+    .btn-primary {
+      background: var(--green);
+      color: white;
+    }
+    .btn-primary:hover { background: var(--green-mid); }
+    .btn-outline {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--text-primary);
+    }
+    .btn-outline:hover {
+      border-color: var(--green);
+      color: var(--green);
+    }
+    .btn-danger {
+      background: var(--red-bg);
+      color: var(--red-text);
+      border: 1px solid var(--red-border);
+    }
+    .btn-danger:hover {
+      background: var(--red-highlight);
+    }
+
+    /* User Profile Info */
+    .profile-header {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 24px;
+      padding-bottom: 24px;
+      border-bottom: 1px solid var(--border-soft);
+    }
+    .avatar {
+      width: 64px;
+      height: 64px;
+      background: var(--green-light);
+      color: var(--green-text);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Inter', sans-serif;
+      font-size: 24px;
+      font-weight: 600;
+    }
+    .member-since {
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+
+    /* Flex Rows */
+    .flex-row-between {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    /* Progress Bar */
+    .progress-bg {
+      width: 100%;
+      height: 8px;
+      background: var(--bg-soft);
+      border-radius: 4px;
+      overflow: hidden;
+      margin: 12px 0;
+    }
+    .progress-fill {
+      height: 100%;
+      background: var(--green);
+      border-radius: 4px;
+      transition: width 0.3s ease;
+    }
+
+    /* Danger Zone */
+    .danger-zone {
+      border-color: var(--red-border);
+      background: #fffdfd;
+    }
+    .danger-zone-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 16px 0;
+    }
+    .danger-zone-item:not(:last-child) {
+      border-bottom: 1px solid var(--red-highlight);
+    }
+
+    /* Badges */
+    .badge {
+      padding: 4px 10px;
+      border-radius: 100px;
+      font-size: 12px;
+      font-weight: 600;
+      font-family: 'JetBrains Mono', monospace;
+      text-transform: uppercase;
+    }
+    .badge-pro { background: var(--green-light); color: var(--green-text); }
+    .badge-free { background: var(--bg-soft); color: var(--text-secondary); }
+    .badge-connected { background: var(--green-light); color: var(--green-text); }
+    .badge-disconnected { background: var(--red-bg); color: var(--red-text); }
+    
+    #loading-state {
+      display: flex; justify-content: center; padding: 100px 0; font-size: 18px; color: var(--text-muted);
+    }
+    #dashboard-content { display: none; }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <div class="nav-container">
+      <a href="/" class="nav-left">
+        <div class="nav-logo-icon">R</div>
+        <div class="nav-logo-text">Reword</div>
+      </a>
+      <div style="font-size: 14px; font-weight: 500; color: var(--text-secondary);">Manage Account</div>
+    </div>
+  </nav>
+
+  <div id="loading-state">Loading your account...</div>
+
+  <div class="container" id="dashboard-content">
+    <h1 class="page-title">Manage Account</h1>
+
+    <!-- 1. ACCOUNT SECTION -->
+    <h2 class="section-title">Account</h2>
+    <div class="card">
+      <div class="profile-header">
+        <div class="avatar" id="user-avatar">?</div>
+        <div>
+          <div style="font-weight: 600; font-size: 18px; color: var(--text-primary);" id="display-name">Loading...</div>
+          <div class="member-since" id="member-since">Member since: Loading...</div>
+        </div>
+      </div>
+
+      <form id="form-account">
+        <div class="form-group">
+          <label for="full_name">Full Name</label>
+          <input type="text" id="full_name" class="form-control" placeholder="Your full name">
+        </div>
+        <div class="form-group">
+          <label for="email">Email Address</label>
+          <input type="email" id="email" class="form-control" placeholder="Your email address" disabled>
+          <div style="font-size: 12px; color: var(--text-muted); margin-top: 4px;">Email cannot be changed directly at this time.</div>
+        </div>
+        <div class="form-group">
+          <label for="password">Change Password</label>
+          <input type="password" id="password" class="form-control" placeholder="Enter new password to change">
+        </div>
+        <button type="submit" class="btn btn-primary" id="btn-save-account">Save Account Details</button>
+        <span id="account-msg" style="margin-left: 12px; font-size: 13px;"></span>
+      </form>
+    </div>
+
+    <!-- 2. PLAN & BILLING -->
+    <h2 class="section-title">Plan & Billing</h2>
+    <div class="card">
+      <div class="flex-row-between" style="margin-bottom: 24px;">
+        <div>
+          <div style="font-weight: 600; font-size: 16px; margin-bottom: 4px;">Current Plan</div>
+          <div style="font-size: 14px; color: var(--text-muted);" id="plan-desc">Loading...</div>
+        </div>
+        <div class="badge" id="plan-badge">Loading...</div>
+      </div>
+
+      <div style="margin-bottom: 24px;">
+        <div class="flex-row-between" style="font-size: 14px;">
+          <span style="font-weight: 500;">Rewrites used this month</span>
+          <span style="font-weight: 600; color: var(--text-primary);" id="usage-text">0 / 3</span>
+        </div>
+        <div class="progress-bg">
+          <div class="progress-fill" id="usage-progress" style="width: 0%;"></div>
+        </div>
+      </div>
+
+      <div class="flex-row-between" style="border-top: 1px solid var(--border-soft); padding-top: 20px;">
+        <div>
+          <div style="font-weight: 500; font-size: 14px; margin-bottom: 4px;">Next Billing Date</div>
+          <div style="font-size: 13px; color: var(--text-muted);">View details in billing portal</div>
+        </div>
+        <div id="plan-actions">
+          <!-- Populated by JS -->
+        </div>
+      </div>
+    </div>
+
+    <!-- 3. EXTENSION -->
+    <h2 class="section-title">Extension</h2>
+    <div class="card">
+      <div class="flex-row-between" style="margin-bottom: 16px;">
+        <div>
+          <div style="font-weight: 600; font-size: 16px; margin-bottom: 4px;">Connection Status</div>
+          <div style="font-size: 14px; color: var(--text-muted);" id="last-synced">Last synced: Loading...</div>
+        </div>
+        <div class="badge" id="extension-badge">Loading...</div>
+      </div>
+      <div style="border-top: 1px solid var(--border-soft); padding-top: 20px; margin-top: 20px;">
+        <a href="https://chrome.google.com/webstore" target="_blank" class="btn btn-outline">Download Chrome Extension</a>
+      </div>
+    </div>
+
+    <!-- 4. PREFERENCES -->
+    <h2 class="section-title">Preferences</h2>
+    <div class="card">
+      <form id="form-preferences">
+        <div class="form-group" style="margin-bottom: 0;">
+          <label for="default_tone">Default Rewrite Tone</label>
+          <select id="default_tone" class="form-control" style="max-width: 300px; margin-bottom: 16px;">
+            <option value="Casual">Casual</option>
+            <option value="Professional">Professional</option>
+            <option value="Formal">Formal</option>
+          </select>
+          <div style="font-size: 13px; color: var(--text-muted); margin-bottom: 20px;">The extension will remember this tone for quick rewrites.</div>
+        </div>
+        <button type="submit" class="btn btn-primary" id="btn-save-prefs">Save Preferences</button>
+        <span id="prefs-msg" style="margin-left: 12px; font-size: 13px;"></span>
+      </form>
+    </div>
+
+    <!-- 5. DANGER ZONE -->
+    <h2 class="section-title" style="color: var(--red-text);">Danger Zone</h2>
+    <div class="card danger-zone">
+      <div class="danger-zone-item">
+        <div>
+          <div style="font-weight: 600; font-size: 15px; color: var(--text-primary); margin-bottom: 4px;">Sign Out</div>
+          <div style="font-size: 13px; color: var(--text-muted);">Sign out of your account on this device.</div>
+        </div>
+        <button class="btn btn-outline" id="btn-signout" style="border-color: var(--border);">Sign Out</button>
+      </div>
+      <div class="danger-zone-item">
+        <div>
+          <div style="font-weight: 600; font-size: 15px; color: var(--red-text); margin-bottom: 4px;">Delete Account</div>
+          <div style="font-size: 13px; color: var(--text-muted);">Permanently delete your account and all data. This cannot be undone.</div>
+        </div>
+        <button class="btn btn-danger" id="btn-delete-account">Delete Account</button>
+      </div>
+    </div>
+
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script type="module" src="account.js"></script>
+</body>
+</html>

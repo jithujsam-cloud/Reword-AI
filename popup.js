@@ -146,7 +146,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // 3. Listen for AUTH_SUCCESS or SESSION_FROM_WEBSITE messages
   chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     if (message.type === 'AUTH_SUCCESS') {
-      chrome.storage.local.get(["supabase_user_id", "user_email", "plan", "rewrites_used", "rewrites_limit", "payment_status", "licenseKey"], (result) => {
+      chrome.storage.local.get(["supabase_user_id", "user_email", "plan", "rewrites_used", "rewrites_limit", "payment_status", "licenseKey", "default_tone"], (result) => {
         supabaseUserId = result.supabase_user_id;
         userEmail = result.user_email;
         showScreen("screen-main");
@@ -170,7 +170,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
           showScreen("screen-main");
           // fetch user profile data and update UI
-          chrome.storage.local.get(["plan", "rewrites_used", "rewrites_limit", "payment_status", "licenseKey"], (result) => {
+          chrome.storage.local.get(["plan", "rewrites_used", "rewrites_limit", "payment_status", "licenseKey", "default_tone"], (result) => {
             loadUserDataAndSupabase(result);
           });
         });
@@ -228,7 +228,7 @@ document.addEventListener("DOMContentLoaded", () => {
   document.getElementById("btn-activate").addEventListener("click", handleActivatePro);
 
   document.getElementById("row-manage-account").addEventListener("click", () => {
-    chrome.tabs.create({ url: "https://reword.co/account" });
+    chrome.tabs.create({ url: "https://clospect.online/account.html" });
   });
 
   document.getElementById("btn-get-pro").addEventListener("click", () => {
@@ -295,7 +295,8 @@ async function fetchSupabaseData() {
         plan: userRow.plan,
         rewrites_used: userRow.rewrites_used,
         rewrites_limit: userRow.rewrites_limit,
-        payment_status: userRow.payment_status
+        payment_status: userRow.payment_status,
+        default_tone: userRow.default_tone
       });
       
       usageCount = userRow.rewrites_used;
@@ -365,11 +366,14 @@ function handleDeAI() {
   // Show Loading overlay
   loadingOverlay.classList.remove("hidden");
 
-  // Send request to background.js
-  chrome.runtime.sendMessage(
-    { action: "rewriteText", text: originalText },
-    (response) => {
-      loadingOverlay.classList.add("hidden");
+  chrome.storage.local.get(["default_tone"], (result) => {
+    const tone = result.default_tone || "Professional";
+
+    // Send request to background.js
+    chrome.runtime.sendMessage(
+      { action: "rewriteText", text: originalText, tone: tone },
+      (response) => {
+        loadingOverlay.classList.add("hidden");
 
       if (chrome.runtime.lastError) {
         showError("Could not connect to the background service. Try reloading the extension.");
@@ -402,9 +406,10 @@ function handleDeAI() {
         showScreen("screen-result");
       } else {
         showError(response ? response.error : "An unknown error occurred during rewriting.");
+        }
       }
-    }
-  );
+    );
+  });
 }
 
 function handleReplace() {
