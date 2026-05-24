@@ -7,30 +7,29 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Literata:ital,opsz,wght@0,7..72,700;1,7..72,700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Literata:ital,opsz,wght@0,7..72,600;0,7..72,700;1,7..72,600;1,7..72,700&display=swap" rel="stylesheet">
 
 <style>
 :root {
-  --bg-deep: #050a07;
-  --bg-mid: #0a110c;
-  --bg-card: #0f1a11;
-  --bg-card-hover: #142018;
-  --green-primary: #1b4332;
+  --bg: #ffffff;
+  --bg-soft: #f7f8f5;
+  --bg-card: #ffffff;
+  --text-primary: #0d1117;
+  --text-secondary: #4b5563;
+  --text-muted: #9ca3af;
+  --green: #1b4332;
   --green-mid: #2d6a4f;
-  --green-bright: #40916c;
-  --green-glow: #52b788;
-  --green-text: #95d5b2;
-  --green-subtle: #d8f3dc;
-  --text-primary: #f0f1ee;
-  --text-secondary: #a8b5a8;
-  --text-muted: #6b7a6b;
-  --border: rgba(255,255,255,0.06);
-  --border-green: rgba(64,145,108,0.3);
-  --red-bg: #1a0808;
-  --red-border: rgba(220,38,38,0.2);
-  --red-highlight: rgba(220,38,38,0.15);
-  --green-bg: #081a0f;
-  --green-border: rgba(45,106,79,0.3);
+  --green-light: #d1fae5;
+  --green-text: #166534;
+  --border: #e5e7eb;
+  --border-soft: #f3f4f6;
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+  --shadow-md: 0 4px 16px rgba(0,0,0,0.08), 0 2px 4px rgba(0,0,0,0.04);
+  --shadow-lg: 0 20px 40px rgba(0,0,0,0.08), 0 4px 8px rgba(0,0,0,0.04);
+  --red-bg: #fff5f5;
+  --red-border: #fecaca;
+  --red-text: #dc2626;
+  --red-highlight: #fee2e2;
 }
 
 * {
@@ -41,7 +40,7 @@
 
 html {
   scroll-behavior: smooth;
-  background: var(--bg-deep);
+  background: var(--bg);
 }
 
 body {
@@ -60,11 +59,6 @@ ul {
   list-style: none;
 }
 
-/* Typography Utilities */
-.font-lit { font-family: 'Literata', serif; }
-.font-inter { font-family: 'Inter', sans-serif; }
-.font-mono { font-family: 'JetBrains Mono', monospace; }
-
 .text-center { text-align: center; }
 
 /* Container */
@@ -76,10 +70,10 @@ ul {
 
 /* NAVBAR */
 nav {
-  background: rgba(5,10,7,0.85);
-  backdrop-filter: blur(20px);
+  background: rgba(255,255,255,0.85);
+  backdrop-filter: blur(16px);
   border-bottom: 1px solid var(--border);
-  height: 64px;
+  height: 60px;
   position: sticky;
   top: 0;
   z-index: 100;
@@ -102,7 +96,7 @@ nav {
 .nav-logo-icon {
   width: 32px;
   height: 32px;
-  background: var(--green-primary);
+  background: var(--green);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -117,21 +111,7 @@ nav {
   font-family: 'Literata', serif;
   font-weight: 700;
   font-size: 20px;
-  color: white;
-}
-
-.nav-center {
-  display: flex;
-  gap: 32px;
-}
-
-.nav-center a {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 13px;
-  color: var(--text-muted);
-}
-.nav-center a:hover {
-  color: var(--green-text);
+  color: var(--text-primary);
 }
 
 .nav-right {
@@ -144,20 +124,19 @@ nav {
   font-family: 'Inter', sans-serif;
   font-size: 14px;
   color: var(--text-secondary);
-  font-weight: 500;
 }
 .nav-signin:hover {
-  color: white;
+  color: var(--text-primary);
 }
 
 .btn-pill {
-  background: var(--green-primary);
+  background: var(--green);
   color: white;
   border-radius: 100px;
-  padding: 10px 24px;
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 13px;
-  font-weight: 500;
+  padding: 10px 20px;
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -168,8 +147,8 @@ nav {
 
 /* HERO SECTION */
 .hero {
-  background: var(--bg-deep);
-  padding: 140px 0 120px;
+  background: var(--bg);
+  padding: 120px 0 100px;
   position: relative;
   overflow: hidden;
 }
@@ -177,94 +156,80 @@ nav {
 .dot-grid {
   position: absolute;
   inset: 0;
-  background-image: radial-gradient(circle, rgba(255,255,255,0.03) 1px, transparent 1px);
-  background-size: 32px 32px;
+  background-image: radial-gradient(circle, #e5e7eb 1px, transparent 1px);
+  background-size: 28px 28px;
+  opacity: 0.6;
   z-index: 0;
 }
 
 .orb {
   position: absolute;
-  pointer-events: none;
-  border-radius: 50%;
-  z-index: 1;
-}
-.orb-1 {
-  width: 700px;
-  height: 700px;
-  background: radial-gradient(circle, rgba(27,67,50,0.4) 0%, transparent 70%);
-  top: -200px;
-  left: -200px;
-}
-.orb-2 {
-  width: 500px;
-  height: 500px;
-  background: radial-gradient(circle, rgba(64,145,108,0.2) 0%, transparent 70%);
-  bottom: -100px;
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(circle, rgba(209,250,229,0.5) 0%, transparent 70%);
+  top: -100px;
   right: -100px;
-}
-.orb-3 {
-  width: 300px;
-  height: 300px;
-  background: radial-gradient(circle, rgba(82,183,136,0.1) 0%, transparent 70%);
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  pointer-events: none;
+  z-index: 0;
 }
 
 .hero-content {
   position: relative;
-  z-index: 10;
+  z-index: 1;
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 
 .trust-badge {
-  background: rgba(27,67,50,0.4);
-  border: 1px solid var(--border-green);
+  background: var(--green-light);
+  border: 1px solid rgba(22,101,52,0.2);
   border-radius: 100px;
   padding: 6px 16px;
   font-family: 'JetBrains Mono', monospace;
   font-size: 12px;
   color: var(--green-text);
-  margin-bottom: 32px;
-  display: inline-block;
+  margin-bottom: 28px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
 }
 
 .hero-title {
   font-family: 'Literata', serif;
   font-weight: 700;
-  font-size: 80px;
+  font-size: 72px;
   line-height: 1.05;
   color: var(--text-primary);
   text-align: center;
-  max-width: 800px;
-  margin: 0 auto;
+  max-width: 760px;
+  margin: 0 auto 24px;
+  letter-spacing: -0.02em;
 }
 .hero-title em {
   font-style: italic;
-  color: var(--green-text);
+  color: var(--green);
 }
 
 .hero-sub {
   font-family: 'Inter', sans-serif;
   font-size: 18px;
   color: var(--text-secondary);
-  max-width: 520px;
+  max-width: 500px;
   text-align: center;
-  margin: 24px auto 48px;
-  line-height: 1.6;
+  margin: 0 auto 40px;
+  line-height: 1.65;
 }
 
 .hero-btns {
   display: flex;
   align-items: center;
-  gap: 16px;
+  gap: 12px;
   justify-content: center;
 }
 
 .btn-hero-primary {
-  background: var(--green-primary);
+  background: var(--green);
   color: white;
   border-radius: 100px;
   padding: 16px 32px;
@@ -276,15 +241,16 @@ nav {
   display: inline-flex;
   align-items: center;
   gap: 8px;
+  transition: box-shadow 0.2s;
 }
 .btn-hero-primary:hover {
-  background: var(--green-mid);
+  box-shadow: var(--shadow-md);
 }
 
 .btn-hero-secondary {
   background: transparent;
   color: var(--text-secondary);
-  border: 1px solid var(--border);
+  border: 1.5px solid var(--border);
   border-radius: 100px;
   padding: 16px 32px;
   font-family: 'Inter', sans-serif;
@@ -292,7 +258,7 @@ nav {
   cursor: pointer;
 }
 .btn-hero-secondary:hover {
-  border-color: var(--border-green);
+  border-color: var(--green);
   color: var(--text-primary);
 }
 
@@ -300,12 +266,13 @@ nav {
   font-family: 'JetBrains Mono', monospace;
   font-size: 12px;
   color: var(--text-muted);
-  margin-top: 20px;
+  margin-top: 16px;
+  text-align: center;
 }
 
 .hero-cards-wrapper {
-  max-width: 900px;
-  margin: 80px auto 0;
+  max-width: 860px;
+  margin: 72px auto 0;
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 24px;
@@ -316,20 +283,18 @@ nav {
 .comp-card-hero {
   border-radius: 16px;
   padding: 28px;
-  box-shadow: 0 32px 64px rgba(0,0,0,0.4);
+  box-shadow: var(--shadow-lg);
 }
 .comp-card-hero.red {
   background: var(--red-bg);
   border: 1px solid var(--red-border);
   transform: rotate(-1.5deg);
-  box-shadow: 0 32px 64px rgba(0,0,0,0.4), 0 0 0 1px var(--red-border);
 }
 .comp-card-hero.green {
-  background: var(--green-bg);
-  border: 1px solid var(--green-border);
+  background: var(--bg-card);
+  border: 1px solid var(--border);
   transform: rotate(1.5deg);
-  margin-top: -24px;
-  box-shadow: 0 32px 64px rgba(0,0,0,0.4), 0 0 0 1px var(--green-border);
+  margin-top: -20px;
 }
 
 .card-header {
@@ -346,13 +311,13 @@ nav {
   font-size: 11px;
   text-transform: uppercase;
 }
-.card-label.red { color: #ef4444; }
+.card-label.red { color: var(--red-text); }
 .card-label.green { color: var(--green-text); }
 
 .card-dot {
-  width: 6px; height: 6px; border-radius: 50%;
+  width: 8px; height: 8px; border-radius: 50%;
 }
-.card-dot.red { background: #ef4444; }
+.card-dot.red { background: var(--red-text); }
 .card-dot.green { background: var(--green-text); }
 
 .card-body-red {
@@ -372,38 +337,39 @@ nav {
 
 .highlight {
   background: var(--red-highlight);
-  color: #ef4444;
-  padding: 2px 6px;
+  color: var(--red-text);
+  padding: 1px 6px;
   border-radius: 4px;
+  font-style: normal;
 }
 .strike {
   text-decoration: line-through;
-  opacity: 0.5;
+  opacity: 0.4;
 }
 
 /* SOCIAL PROOF BAR */
 .social-proof {
-  background: var(--bg-mid);
+  background: var(--bg-soft);
   border-top: 1px solid var(--border);
   border-bottom: 1px solid var(--border);
-  padding: 24px 0;
+  padding: 20px 0;
   text-align: center;
 }
 .social-proof-text {
   font-family: 'JetBrains Mono', monospace;
-  font-size: 13px;
+  font-size: 12px;
   color: var(--text-muted);
 }
 
 /* HOW IT WORKS */
 .how-it-works {
-  background: var(--bg-mid);
-  padding: 120px 0;
+  background: var(--bg-soft);
+  padding: 100px 0;
 }
 .section-title {
   font-family: 'Literata', serif;
   font-weight: 700;
-  font-size: 56px;
+  font-size: 52px;
   color: var(--text-primary);
   text-align: center;
   margin-bottom: 64px;
@@ -416,46 +382,51 @@ nav {
 }
 
 .step-card {
-  background: var(--bg-card);
+  background: white;
   border: 1px solid var(--border);
   border-radius: 16px;
-  padding: 40px 32px;
+  padding: 36px 28px;
   position: relative;
+  box-shadow: var(--shadow-sm);
   transition: all 0.2s;
 }
 .step-card:hover {
-  border-color: var(--border-green);
+  box-shadow: var(--shadow-md);
+  border-color: rgba(27,67,50,0.3);
 }
 
 .step-number {
   font-family: 'Literata', serif;
-  font-size: 80px;
-  color: rgba(255,255,255,0.04);
+  font-size: 64px;
+  color: #f3f4f6;
   position: absolute;
   top: 16px;
   right: 24px;
   line-height: 1;
+  font-weight: 700;
 }
 
 .step-icon {
-  width: 48px;
-  height: 48px;
-  background: rgba(27,67,50,0.5);
-  border-radius: 12px;
+  width: 44px;
+  height: 44px;
+  background: var(--green-light);
+  border-radius: 10px;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: 24px;
+  margin-bottom: 20px;
+  color: var(--green-text);
 }
 .step-icon svg {
-  stroke: var(--green-text);
+  stroke: currentColor;
 }
 
 .step-title {
   font-family: 'Literata', serif;
-  font-size: 24px;
+  font-weight: 600;
+  font-size: 22px;
   color: var(--text-primary);
-  margin-bottom: 12px;
+  margin-bottom: 8px;
 }
 .step-body {
   font-family: 'Inter', sans-serif;
@@ -466,42 +437,25 @@ nav {
 
 /* STATS SECTION */
 .stats {
-  background: var(--bg-deep);
-  padding: 120px 0;
-  position: relative;
-  overflow: hidden;
-}
-.stats-orb {
-  position: absolute;
-  width: 500px;
-  height: 500px;
-  background: rgba(27,67,50,0.3);
-  filter: blur(120px);
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  pointer-events: none;
-  z-index: 0;
+  background: var(--green);
+  padding: 100px 0;
+  color: white;
 }
 .stats-content {
-  position: relative;
-  z-index: 10;
   text-align: center;
 }
 .stats-title {
   font-family: 'Literata', serif;
   font-weight: 700;
   font-style: italic;
-  font-size: 56px;
-  color: var(--text-primary);
+  font-size: 52px;
   line-height: 1.2;
 }
 .stats-sub {
   font-family: 'Literata', serif;
   font-weight: 700;
-  font-size: 56px;
-  color: var(--text-muted);
-  opacity: 0.5;
+  font-size: 52px;
+  opacity: 0.6;
   margin-bottom: 80px;
   line-height: 1.2;
 }
@@ -513,15 +467,13 @@ nav {
 .stat-num {
   font-family: 'Literata', serif;
   font-weight: 700;
-  font-size: 88px;
-  color: var(--green-text);
-  text-shadow: 0 0 40px rgba(82,183,136,0.3);
+  font-size: 80px;
   line-height: 1;
 }
 .stat-label {
   font-family: 'JetBrains Mono', monospace;
-  font-size: 12px;
-  color: var(--text-muted);
+  font-size: 11px;
+  color: rgba(255,255,255,0.5);
   text-transform: uppercase;
   letter-spacing: 0.15em;
   margin-top: 8px;
@@ -529,32 +481,34 @@ nav {
 
 /* BEFORE/AFTER SECTION */
 .before-after {
-  background: var(--bg-mid);
-  padding: 120px 0;
+  background: white;
+  padding: 100px 0;
 }
 .ba-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 24px;
-  margin-top: 64px;
+  max-width: 860px;
+  margin: 64px auto 0;
 }
 .ba-card {
   border-radius: 16px;
   padding: 28px;
+  box-shadow: var(--shadow-lg);
 }
 .ba-card.red {
   background: var(--red-bg);
   border: 1px solid var(--red-border);
 }
 .ba-card.green {
-  background: var(--green-bg);
-  border: 1px solid var(--green-border);
+  background: var(--bg-card);
+  border: 1px solid var(--border);
 }
 
 /* WHAT IT KILLS */
 .kills {
-  background: var(--bg-deep);
-  padding: 120px 0;
+  background: var(--bg-soft);
+  padding: 100px 0;
 }
 .kills-sub {
   font-family: 'Inter', sans-serif;
@@ -570,28 +524,29 @@ nav {
   gap: 16px;
 }
 .kill-pill {
-  background: rgba(255,255,255,0.03);
+  background: white;
   border: 1px solid var(--border);
   border-radius: 100px;
-  padding: 12px 24px;
+  padding: 10px 20px;
   font-family: 'JetBrains Mono', monospace;
   font-size: 13px;
   color: var(--text-muted);
   text-decoration: line-through;
-  text-decoration-color: rgba(239,68,68,0.4);
+  text-decoration-color: rgba(220,38,38,0.4);
   text-align: center;
+  box-shadow: var(--shadow-sm);
   transition: all 0.2s;
 }
 .kill-pill:hover {
-  background: rgba(239,68,68,0.05);
-  border-color: rgba(239,68,68,0.3);
-  color: #ef4444;
+  background: var(--red-bg);
+  border-color: var(--red-border);
+  color: var(--red-text);
 }
 
 /* PRICING */
 .pricing {
-  background: var(--bg-mid);
-  padding: 120px 0;
+  background: white;
+  padding: 100px 0;
 }
 .pricing-sub {
   font-family: 'Inter', sans-serif;
@@ -601,37 +556,40 @@ nav {
   margin: 16px auto 64px;
 }
 .pricing-grid {
-  max-width: 860px;
+  max-width: 800px;
   margin: 0 auto;
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 24px;
 }
 .price-card {
-  background: var(--bg-card);
-  border: 1px solid var(--border);
   border-radius: 20px;
-  padding: 48px;
+  padding: 40px;
   display: flex;
   flex-direction: column;
 }
+.price-card.free {
+  background: var(--bg-soft);
+  border: 1px solid var(--border);
+}
 .price-card.pro {
-  border: 2px solid var(--border-green);
+  background: white;
+  border: 2px solid var(--green);
   position: relative;
-  box-shadow: 0 0 40px rgba(27,67,50,0.3);
+  box-shadow: 0 0 0 4px var(--green-light);
 }
 .price-badge {
   position: absolute;
-  top: -16px;
+  top: -14px;
   left: 50%;
   transform: translateX(-50%);
-  background: var(--green-primary);
+  background: var(--green);
   color: white;
   border-radius: 100px;
   font-family: 'JetBrains Mono', monospace;
   font-size: 11px;
   text-transform: uppercase;
-  padding: 6px 16px;
+  padding: 5px 14px;
 }
 .plan-name {
   font-family: 'Literata', serif;
@@ -642,7 +600,7 @@ nav {
 .plan-price {
   font-family: 'Literata', serif;
   font-weight: 700;
-  font-size: 64px;
+  font-size: 56px;
   color: var(--text-primary);
   margin-bottom: 32px;
   line-height: 1;
@@ -672,6 +630,7 @@ nav {
 .plan-feature svg {
   flex-shrink: 0;
   margin-top: 2px;
+  color: var(--green);
 }
 .btn-price-free {
   border: 1px solid var(--border);
@@ -687,11 +646,10 @@ nav {
   display: block;
 }
 .btn-price-free:hover {
-  border-color: var(--border-green);
-  color: var(--text-primary);
+  border-color: var(--green);
 }
 .btn-price-pro {
-  background: var(--green-primary);
+  background: var(--green);
   color: white;
   border-radius: 12px;
   padding: 16px;
@@ -709,25 +667,25 @@ nav {
 
 /* FAQ */
 .faq {
-  background: var(--bg-deep);
-  padding: 120px 0;
+  background: var(--bg-soft);
+  padding: 100px 0;
 }
 .faq-container {
-  max-width: 720px;
+  max-width: 680px;
   margin: 0 auto;
 }
 details {
-  background: var(--bg-card);
+  background: white;
   border: 1px solid var(--border);
-  border-radius: 16px;
+  border-radius: 14px;
   margin-bottom: 8px;
   overflow: hidden;
 }
 summary {
-  padding: 24px 28px;
+  padding: 22px 24px;
   font-family: 'Inter', sans-serif;
   font-weight: 600;
-  font-size: 18px;
+  font-size: 17px;
   color: var(--text-primary);
   cursor: pointer;
   display: flex;
@@ -739,10 +697,10 @@ summary::-webkit-details-marker {
   display: none;
 }
 summary:hover {
-  color: var(--green-text);
+  color: var(--green);
 }
 .faq-icon {
-  color: var(--green-text);
+  color: var(--green);
   font-size: 20px;
   font-weight: 400;
 }
@@ -753,17 +711,16 @@ details:not([open]) .faq-icon::before {
   content: "+";
 }
 .faq-answer {
-  padding: 0 28px 24px;
+  padding: 0 24px 22px;
   font-family: 'Inter', sans-serif;
-  font-size: 16px;
+  font-size: 15px;
   color: var(--text-muted);
   line-height: 1.7;
 }
 
 /* FOOTER */
 footer {
-  background: var(--bg-deep);
-  border-top: 1px solid var(--border);
+  background: var(--text-primary);
   padding: 60px 0;
 }
 .footer-row-1 {
@@ -778,7 +735,7 @@ footer {
 }
 .footer-logo-text {
   font-family: 'Literata', serif;
-  font-size: 20px;
+  font-size: 18px;
   color: white;
 }
 .footer-links {
@@ -787,16 +744,16 @@ footer {
 }
 .footer-links a {
   font-family: 'JetBrains Mono', monospace;
-  font-size: 13px;
-  color: var(--text-muted);
+  font-size: 12px;
+  color: rgba(255,255,255,0.4);
 }
 .footer-links a:hover {
-  color: var(--text-primary);
+  color: white;
 }
 .footer-row-2 {
   margin-top: 40px;
   padding-top: 40px;
-  border-top: 1px solid var(--border);
+  border-top: 1px solid rgba(255,255,255,0.1);
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -804,20 +761,19 @@ footer {
 .footer-copy {
   font-family: 'JetBrains Mono', monospace;
   font-size: 12px;
-  color: var(--text-muted);
+  color: rgba(255,255,255,0.3);
 }
 .footer-tagline {
   font-family: 'Literata', serif;
   font-style: italic;
-  font-size: 14px;
-  color: var(--text-muted);
+  font-size: 13px;
+  color: rgba(255,255,255,0.3);
 }
 
 /* MOBILE RESPONSIVE */
 @media (max-width: 768px) {
-  .nav-center { display: none; }
   .hero { padding: 100px 0 60px; }
-  .hero-title { font-size: 48px; }
+  .hero-title { font-size: 44px; }
   .hero-btns { flex-direction: column; }
   .btn-hero-primary, .btn-hero-secondary { width: 100%; text-align: center; justify-content: center; }
   .hero-cards-wrapper { grid-template-columns: 1fr; margin-top: 60px; }
@@ -849,10 +805,6 @@ footer {
         <div class="nav-logo-icon">R</div>
         <div class="nav-logo-text">Reword</div>
       </a>
-      <div class="nav-center">
-        <a href="#how-it-works">Product</a>
-        <a href="#pricing">Pricing</a>
-      </div>
       <div class="nav-right">
         <a href="signin.html" class="nav-signin">Sign In</a>
         <a href="signup.html" class="btn-pill">Get Started Free</a>
@@ -862,9 +814,7 @@ footer {
 
   <!-- Hero Section -->
   <section class="hero">
-    <div class="orb orb-1"></div>
-    <div class="orb orb-2"></div>
-    <div class="orb orb-3"></div>
+    <div class="orb"></div>
     <div class="dot-grid"></div>
 
     <div class="container hero-content">
@@ -964,7 +914,6 @@ footer {
 
   <!-- STATS -->
   <section class="stats">
-    <div class="stats-orb"></div>
     <div class="container stats-content">
       <h2 class="stats-title">AI wrote it.</h2>
       <h2 class="stats-sub">Everyone can tell.</h2>
@@ -1048,20 +997,20 @@ footer {
       
       <div class="pricing-grid">
         <!-- Free -->
-        <div class="price-card">
+        <div class="price-card free">
           <div class="plan-name">Free</div>
           <div class="plan-price">₹0 <span>/month</span></div>
           <ul class="plan-features">
             <li class="plan-feature">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--green-bright)" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
               3 rewrites per month
             </li>
             <li class="plan-feature">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--green-bright)" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
               All three tone modes
             </li>
             <li class="plan-feature">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--green-bright)" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
               Works in Gmail
             </li>
           </ul>
@@ -1075,23 +1024,23 @@ footer {
           <div class="plan-price">₹499 <span>/month</span></div>
           <ul class="plan-features">
             <li class="plan-feature">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--green-bright)" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
               Unlimited rewrites
             </li>
             <li class="plan-feature">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--green-bright)" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
               All three tone modes
             </li>
             <li class="plan-feature">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--green-bright)" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
               Works in Gmail + LinkedIn
             </li>
             <li class="plan-feature">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--green-bright)" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
               Priority support
             </li>
             <li class="plan-feature">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--green-bright)" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
               Cancel anytime
             </li>
           </ul>
@@ -1157,7 +1106,7 @@ footer {
         nav.style.backdropFilter = 'blur(24px)';
       } else {
         nav.style.padding = '0';
-        nav.style.backdropFilter = 'blur(20px)';
+        nav.style.backdropFilter = 'blur(16px)';
       }
     });
   </script>
