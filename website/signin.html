@@ -18,6 +18,7 @@
       <p class="subtitle">Sign in to continue to Reword</p>
 
       <div id="signin-error" class="error-msg hidden"></div>
+      <div id="signin-success" class="hidden" style="background-color: var(--success-bg, #e6f6ec); color: var(--success-text, #1e7041); padding: 12px; border-radius: 6px; margin-bottom: 16px; font-size: 14px; text-align: center; border: 1px solid var(--success-text, #1e7041);"></div>
       
       <form id="form-signin">
         <div class="form-group">
@@ -86,7 +87,16 @@
           return;
         }
 
-        window.location.href = 'dashboard.html';
+        const successEl = document.getElementById('signin-success');
+        successEl.textContent = 'Logged in successfully! Connecting to extension...';
+        successEl.classList.remove('hidden');
+        document.getElementById('form-signin').style.display = 'none';
+
+        setTimeout(() => {
+          window.close();
+          // Fallback if browser blocks window.close()
+          window.location.href = 'dashboard.html';
+        }, 2000);
 
       } catch (err) {
         showError('signin-error', err.message || 'An unexpected error occurred.');

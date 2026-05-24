@@ -18,6 +18,7 @@
       <p class="subtitle">3 free rewrites. No credit card.</p>
 
       <div id="signup-error" class="error-msg hidden"></div>
+      <div id="signup-success" class="hidden" style="background-color: var(--success-bg, #e6f6ec); color: var(--success-text, #1e7041); padding: 12px; border-radius: 6px; margin-bottom: 16px; font-size: 14px; text-align: center; border: 1px solid var(--success-text, #1e7041);"></div>
       
       <form id="form-signup">
         <div class="form-group">
@@ -115,7 +116,16 @@
 
           if (data.session) {
             // Email confirmation is disabled — user is signed in immediately.
-            window.location.href = 'dashboard.html';
+            const successEl = document.getElementById('signup-success');
+            successEl.textContent = 'Account created successfully! Connecting to extension...';
+            successEl.classList.remove('hidden');
+            document.getElementById('form-signup').style.display = 'none';
+
+            setTimeout(() => {
+              window.close();
+              // Fallback if browser blocks window.close()
+              window.location.href = 'dashboard.html';
+            }, 2000);
           } else {
             // Email confirmation is enabled — ask the user to check their inbox.
             const form = document.getElementById('form-signup');
