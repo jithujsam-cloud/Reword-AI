@@ -39,6 +39,14 @@ window.addEventListener('storage', (e) => {
 // So we also listen for a direct message from the website.
 window.addEventListener('message', (event) => {
   if (event.data && event.data.type === 'REWORD_AUTH_SUCCESS') {
-    getSession();
+    if (event.data.session) {
+      // Website passed session directly, no need to read localStorage!
+      chrome.runtime.sendMessage({
+        type: 'SESSION_FROM_WEBSITE',
+        session: event.data.session
+      });
+    } else {
+      getSession();
+    }
   }
 });

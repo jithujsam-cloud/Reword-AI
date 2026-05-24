@@ -121,8 +121,9 @@
             successEl.classList.remove('hidden');
             document.getElementById('form-signup').style.display = 'none';
 
-            // Notify extension immediately so it has time to grab the token
-            window.postMessage({ type: 'REWORD_AUTH_SUCCESS' }, '*');
+            // Notify extension immediately so it has time to grab the token.
+            // We pass data.session directly to avoid any localStorage timing issues!
+            window.postMessage({ type: 'REWORD_AUTH_SUCCESS', session: data.session }, '*');
 
             setTimeout(() => {
               window.close();

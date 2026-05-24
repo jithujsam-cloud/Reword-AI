@@ -38,7 +38,10 @@
       "run_at": "document_end"
     },
     {
-      "matches": ["https://clospect.online/*"],
+      "matches": [
+        "https://clospect.online/*",
+        "https://www.clospect.online/*"
+      ],
       "js": ["session-bridge.js"],
       "run_at": "document_idle"
     }

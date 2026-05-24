@@ -107,21 +107,29 @@ document.addEventListener("DOMContentLoaded", () => {
     supabaseUserId = result.supabase_user_id;
     userEmail = result.user_email;
     
-    if (result.supabase_session) {
-      await supabase.auth.setSession({
-        access_token: result.supabase_session.access_token,
-        refresh_token: result.supabase_session.refresh_token
-      });
+    let session = result.supabase_session;
+    if (session) {
+      // Set the session for future api calls, but don't block UI on getting it back
+      supabase.auth.setSession({
+        access_token: session.access_token,
+        refresh_token: session.refresh_token
+      }).catch(console.error);
     }
-
-    // Verify session is still valid
-    const { data: { session } } = await supabase.auth.getSession();
     
     if (supabaseUserId && session) {
       showScreen("screen-main");
       loadUserDataAndSupabase(result);
     } else {
       showScreen("screen-auth");
+      // Debug info
+      const dbg = document.getElementById('debug-info') || document.createElement('div');
+      dbg.id = 'debug-info';
+      dbg.style.fontSize = '10px';
+      dbg.style.color = '#999';
+      dbg.style.textAlign = 'center';
+      dbg.style.marginTop = '10px';
+      dbg.textContent = 'Storage keys: ' + Object.keys(result).join(', ');
+      document.querySelector('#screen-auth .content').appendChild(dbg);
     }
   });
 
