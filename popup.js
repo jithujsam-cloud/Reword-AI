@@ -469,11 +469,11 @@ function injectSettingsContent(email, isPremium) {
   if (oldFreeTier) oldFreeTier.remove();
   
   // The License Key box
-  const licenseCard = document.querySelectorAll('.settings-card')[0]; 
+  const licenseCard = document.getElementById('license-key-card'); 
   if (supabaseUserId) {
     if (licenseCard) licenseCard.style.display = 'none';
   } else {
-    if (licenseCard) licenseCard.style.display = 'flex';
+    if (licenseCard) licenseCard.style.display = 'none';
   }
   
   // User Profile Section (only if logged in)
@@ -497,7 +497,7 @@ function injectSettingsContent(email, isPremium) {
       <button id="btn-signout" class="btn-secondary" style="width: 100%;">Sign Out</button>
     `;
     
-    settingsMain.appendChild(profileSection);
+    document.getElementById("container-user-profile").appendChild(profileSection);
     
     profileSection.querySelector('#btn-signout').addEventListener('click', async () => {
       await supabase.auth.signOut();
@@ -535,7 +535,7 @@ function injectSettingsContent(email, isPremium) {
       }
     `;
     
-    settingsMain.appendChild(freeTierSection);
+    document.getElementById("container-free-tier").appendChild(freeTierSection);
     
     if (!supabaseUserId) {
       freeTierSection.querySelector('#btn-auth-signup-settings').addEventListener("click", () => {
@@ -555,7 +555,7 @@ function injectSettingsContent(email, isPremium) {
       <div style="font-size:13px;color:var(--text-muted);margin-bottom:8px;">You have unlimited access.</div>
       <button id="btn-manage-sub" class="btn-secondary" style="margin-top: 4px;">Manage subscription &rarr;</button>
     `;
-    settingsMain.appendChild(premiumSection);
+    document.getElementById("container-free-tier").appendChild(premiumSection);
     premiumSection.querySelector('#btn-manage-sub').addEventListener("click", () => {
       window.open(DODO_PAYMENT_LINK, '_blank');
     });

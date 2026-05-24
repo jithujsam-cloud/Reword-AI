@@ -822,12 +822,26 @@
         <span class="material-symbols-outlined" style="color: var(--primary-color)">settings</span>
       </header>
       <main class="content">
-        <div class="branding-section">
-          <div class="branding-icon">
-            <span>R</span>
+        <!-- 1. User Profile -->
+        <div id="container-user-profile"></div>
+        
+        <!-- 2. Manage Account -->
+        <div id="row-manage-account" class="settings-card" style="margin-top: 16px; flex-direction: row; justify-content: space-between; align-items: center; cursor: pointer;">
+          <div class="manage-account-left">
+            <span class="material-symbols-outlined" style="font-weight: 300;">person</span>
+            <span>Manage Account</span>
           </div>
+          <span class="material-symbols-outlined" style="color: var(--text-muted); font-size: 18px;">chevron_right</span>
         </div>
-        <div class="settings-card">
+
+        <!-- 3. Free Tier -->
+        <div id="container-free-tier"></div>
+
+        <!-- Hidden Branding / License Key -->
+        <div class="branding-section" style="display: none;">
+          <div class="branding-icon"><span>R</span></div>
+        </div>
+        <div id="license-key-card" class="settings-card" style="display: none;">
           <label for="license-key-input" style="color: var(--text-dark);">
             <span class="material-symbols-outlined" style="font-size: 16px;">lock</span>
             License Key
@@ -839,14 +853,6 @@
           <button id="btn-activate" class="btn-primary" style="margin-top: 8px;">
             Activate Pro ⚡
           </button>
-        </div>
-        
-        <div id="row-manage-account" class="settings-card" style="margin-top: 16px; flex-direction: row; justify-content: space-between; align-items: center; cursor: pointer;">
-          <div class="manage-account-left">
-            <span class="material-symbols-outlined" style="font-weight: 300;">person</span>
-            <span>Manage Account</span>
-          </div>
-          <span class="material-symbols-outlined" style="color: var(--text-muted); font-size: 18px;">chevron_right</span>
         </div>
       </main>
       <footer class="footer">
