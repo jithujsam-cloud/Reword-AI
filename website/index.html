@@ -11,18 +11,18 @@
 
 <style>
 :root {
-  --bg: #f0f7f4;
-  --bg-soft: #e8f2ed;
+  --bg: #f9faf6;
+  --bg-soft: #f5f3f0;
   --bg-card: #ffffff;
-  --text-primary: #0d1117;
-  --text-secondary: #4b5563;
-  --text-muted: #9ca3af;
-  --green: #1b4332;
-  --green-mid: #2d6a4f;
-  --green-light: #d1fae5;
-  --green-text: #166534;
-  --border: #e5e7eb;
-  --border-soft: #f3f4f6;
+  --text-primary: #1b1c1a;
+  --text-secondary: #414844;
+  --text-muted: #717973;
+  --green: #143e2f;
+  --green-mid: #0f2e22;
+  --green-light: #e8f5ed;
+  --green-text: #0e6c4a;
+  --border: #c1c8c2;
+  --border-soft: #e2e3e0;
   --shadow-sm: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
   --shadow-md: 0 4px 16px rgba(0,0,0,0.08), 0 2px 4px rgba(0,0,0,0.04);
   --shadow-lg: 0 20px 40px rgba(0,0,0,0.08), 0 4px 8px rgba(0,0,0,0.04);
@@ -48,7 +48,7 @@ body {
   color: var(--text-primary);
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
-  background: #f0f7f4;
+  background: var(--bg);
 }
 
 a {
@@ -157,7 +157,7 @@ nav {
 .dot-grid {
   position: absolute;
   inset: 0;
-  background-image: radial-gradient(circle, #d1d5db 1px, transparent 1px);
+  background-image: radial-gradient(circle, var(--border) 1px, transparent 1px);
   background-size: 28px 28px;
   opacity: 0.5;
   z-index: 0;
@@ -402,7 +402,7 @@ nav {
 }
 
 .step-card {
-  background: #f0f7f4;
+  background: var(--bg-card);
   border: 1px solid var(--border);
   border-radius: 16px;
   padding: 36px 28px;
@@ -507,7 +507,7 @@ nav {
 
 /* BEFORE/AFTER SECTION */
 .before-after {
-  background: #f0f7f4;
+  background: var(--bg-card);
   padding: 100px 0;
 }
 .ba-grid {
@@ -551,8 +551,8 @@ nav {
   gap: 16px;
 }
 .kill-pill {
-  background: #f0f7f4;
-  border: 1.5px solid #e5e7eb;
+  background: var(--bg-card);
+  border: 1.5px solid var(--border);
   border-radius: 100px;
   padding: 12px 22px;
   font-family: 'JetBrains Mono', monospace;
@@ -573,7 +573,7 @@ nav {
 
 /* PRICING */
 .pricing {
-  background: #f0f7f4;
+  background: var(--bg-card);
   padding: 100px 0;
 }
 .pricing-sub {
@@ -597,15 +597,15 @@ nav {
   flex-direction: column;
 }
 .price-card.free {
-  background: #f9fafb;
-  border: 1.5px solid #e5e7eb;
+  background: var(--bg-soft);
+  border: 1px solid var(--border);
   box-shadow: inset 0 1px 3px rgba(0,0,0,0.04);
 }
 .price-card.pro {
-  background: #f0f7f4;
-  border: 2px solid #1b4332;
+  background: var(--bg-card);
+  border: 2px solid var(--green);
   position: relative;
-  box-shadow: 0 0 0 4px rgba(209,250,229,0.5), 0 16px 40px rgba(27,67,50,0.1);
+  box-shadow: 0 0 0 4px var(--green-light), 0 16px 40px rgba(20,62,47,0.1);
 }
 .price-badge {
   position: absolute;
@@ -704,7 +704,7 @@ nav {
   margin: 0 auto;
 }
 details {
-  background: #f0f7f4;
+  background: var(--bg-card);
   border: 1px solid var(--border);
   border-radius: 12px;
   margin-bottom: 6px;
@@ -747,7 +747,7 @@ details[open] summary::after {
 
 /* FOOTER */
 footer {
-  background: #1B4332;
+  background: var(--green);
   padding: 64px 0;
 }
 .footer-row-1 {
@@ -1032,15 +1032,15 @@ footer {
           <div class="plan-price">₹0 <span>/month</span></div>
           <ul class="plan-features">
             <li class="plan-feature">
-              <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="8" fill="#d1fae5"/><path d="M5 8l2 2 4-4" stroke="#166534" stroke-width="1.5" stroke-linecap="round"/></svg>
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="8" fill="#e8f5ed"/><path d="M5 8l2 2 4-4" stroke="#0e6c4a" stroke-width="1.5" stroke-linecap="round"/></svg>
               3 rewrites per month
             </li>
             <li class="plan-feature">
-              <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="8" fill="#d1fae5"/><path d="M5 8l2 2 4-4" stroke="#166534" stroke-width="1.5" stroke-linecap="round"/></svg>
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="8" fill="#e8f5ed"/><path d="M5 8l2 2 4-4" stroke="#0e6c4a" stroke-width="1.5" stroke-linecap="round"/></svg>
               All three tone modes
             </li>
             <li class="plan-feature">
-              <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="8" fill="#d1fae5"/><path d="M5 8l2 2 4-4" stroke="#166534" stroke-width="1.5" stroke-linecap="round"/></svg>
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="8" fill="#e8f5ed"/><path d="M5 8l2 2 4-4" stroke="#0e6c4a" stroke-width="1.5" stroke-linecap="round"/></svg>
               Works in Gmail
             </li>
           </ul>
