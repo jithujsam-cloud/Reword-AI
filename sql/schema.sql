@@ -1,7 +1,7 @@
 -- Create users table
 CREATE TABLE users (
   id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
-  clerk_user_id text UNIQUE NOT NULL,
+  supabase_user_id uuid UNIQUE NOT NULL,
   email text NOT NULL,
   plan text DEFAULT 'free',
   rewrites_used integer DEFAULT 0,
@@ -24,15 +24,20 @@ USING (true)
 WITH CHECK (true);
 
 -- Policy for users to read their own row
--- Note: Assuming Clerk JWT is passed to Supabase and 'sub' claim contains clerk_user_id
 CREATE POLICY "Users can read own row"
 ON users
 FOR SELECT
-USING (auth.jwt() ->> 'sub' = clerk_user_id);
+USING (auth.uid() = supabase_user_id);
 
 -- Policy for users to update their own row
 CREATE POLICY "Users can update own row"
 ON users
 FOR UPDATE
-USING (auth.jwt() ->> 'sub' = clerk_user_id)
-WITH CHECK (auth.jwt() ->> 'sub' = clerk_user_id);
+USING (auth.uid() = supabase_user_id)
+WITH CHECK (auth.uid() = supabase_user_id);
+
+-- Policy for users to insert their own row
+CREATE POLICY "Users can insert own row"
+ON users
+FOR INSERT
+WITH CHECK (auth.uid() = supabase_user_id);
