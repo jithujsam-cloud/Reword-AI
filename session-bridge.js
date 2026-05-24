@@ -1,9 +1,11 @@
 // session-bridge.js
 const getSession = async () => {
   const keys = Object.keys(localStorage);
-  const sessionKey = keys.find(k => 
-    k.includes('supabase') && 
-    k.includes('auth')
+  // Supabase v2 stores the session under "sb-<project-ref>-auth-token".
+  // The key does NOT contain the word "supabase", so we match the v2 pattern first.
+  const sessionKey = keys.find(k =>
+    (k.startsWith('sb-') && k.endsWith('-auth-token')) ||
+    (k.includes('supabase') && k.includes('auth'))
   );
   
   if (sessionKey) {

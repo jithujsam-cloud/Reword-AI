@@ -103,10 +103,17 @@ document.addEventListener("DOMContentLoaded", () => {
   // Hide all screens explicitly first
   screenMain.classList.add("hidden");
   
-  chrome.storage.local.get(["supabase_user_id", "user_email", "plan", "rewrites_used", "rewrites_limit", "payment_status", "licenseKey"], async (result) => {
+  chrome.storage.local.get(["supabase_session", "supabase_user_id", "user_email", "plan", "rewrites_used", "rewrites_limit", "payment_status", "licenseKey"], async (result) => {
     supabaseUserId = result.supabase_user_id;
     userEmail = result.user_email;
     
+    if (result.supabase_session) {
+      await supabase.auth.setSession({
+        access_token: result.supabase_session.access_token,
+        refresh_token: result.supabase_session.refresh_token
+      });
+    }
+
     // Verify session is still valid
     const { data: { session } } = await supabase.auth.getSession();
     
@@ -142,10 +149,17 @@ document.addEventListener("DOMContentLoaded", () => {
       if (session && session.user) {
         chrome.storage.local.set({
           supabase_user_id: session.user.id,
-          user_email: session.user.email
-        }, () => {
+          user_email: session.user.email,
+          supabase_session: session
+        }, async () => {
           supabaseUserId = session.user.id;
           userEmail = session.user.email;
+          
+          await supabase.auth.setSession({
+            access_token: session.access_token,
+            refresh_token: session.refresh_token
+          });
+
           showScreen("screen-main");
           // fetch user profile data and update UI
           chrome.storage.local.get(["plan", "rewrites_used", "rewrites_limit", "payment_status", "licenseKey"], (result) => {

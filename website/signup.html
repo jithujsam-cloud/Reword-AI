@@ -113,7 +113,23 @@
             console.error('DB insert failed:', insertErr.message);
           }
 
-          window.location.href = 'dashboard.html';
+          if (data.session) {
+            // Email confirmation is disabled — user is signed in immediately.
+            window.location.href = 'dashboard.html';
+          } else {
+            // Email confirmation is enabled — ask the user to check their inbox.
+            const form = document.getElementById('form-signup');
+            form.innerHTML = `
+              <div style="text-align:center;padding:24px 0;">
+                <div style="font-size:40px;margin-bottom:16px;">📬</div>
+                <h3 style="margin-bottom:8px;">Check your email</h3>
+                <p style="color:#666;font-size:14px;line-height:1.5;">
+                  We sent a confirmation link to <strong>${data.user.email}</strong>.<br>
+                  Click it to activate your account and sign in.
+                </p>
+              </div>
+            `;
+          }
         }
 
       } catch (err) {

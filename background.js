@@ -75,6 +75,18 @@ ADDITIONAL REWRITE RULES — apply to all tone types:
 
 
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+  if (request.type === 'SESSION_FROM_WEBSITE') {
+    const session = request.session;
+    if (session && session.user) {
+      chrome.storage.local.set({
+        supabase_user_id: session.user.id,
+        user_email: session.user.email,
+        supabase_session: session
+      });
+    }
+    return false;
+  }
+
   if (request.action === "rewriteText") {
     const textToRewrite = request.text;
     
