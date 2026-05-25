@@ -10,7 +10,8 @@
     "tabs"
   ],
   "host_permissions": [
-    "https://*.supabase.co/*"
+    "https://*.supabase.co/*",
+    "https://api.openai.com/*"
   ],
   "icons": {
     "16": "icon16.png",

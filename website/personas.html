@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Personas | Reword</title>
+  <meta name="description" content="Create and manage your writing personas. Train AI to match your unique voice.">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="container nav-content">
+      <a href="/" class="logo">
+        <div class="logo-icon">R</div>
+        Reword
+      </a>
+      <div class="nav-links">
+        <a href="dashboard.html" class="btn btn-ghost" style="font-size:14px;">Dashboard</a>
+        <button id="btn-signout" class="btn btn-ghost">Sign Out</button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <div class="container" style="max-width: 960px; padding-top: 40px; padding-bottom: 80px;">
+
+    <!-- Dashboard Nav Tabs -->
+    <div class="dashboard-nav">
+      <a href="dashboard.html">Overview</a>
+      <a href="personas.html" class="active">Personas</a>
+    </div>
+
+    <!-- Page Header -->
+    <div class="page-header">
+      <h1>Your Personas</h1>
+      <button id="btn-create-persona" class="btn btn-primary">+ New Persona</button>
+    </div>
+
+    <!-- Personas Grid (populated by JS) -->
+    <div id="personas-grid" class="personas-grid"></div>
+
+    <!-- Empty State (shown when no personas) -->
+    <div id="empty-state" class="empty-state hidden">
+      <div class="empty-state-icon">✍️</div>
+      <h3>No personas yet</h3>
+      <p>Create a persona and train it with your writing samples. The AI will learn your voice and rewrite text in your style.</p>
+      <button id="btn-create-first" class="btn btn-primary">Create Your First Persona</button>
+    </div>
+
+  </div>
+
+  <!-- Create/Edit Persona Modal -->
+  <div id="persona-modal" class="modal-overlay">
+    <div class="modal">
+      <div class="modal-header">
+        <h2 id="modal-title">New Persona</h2>
+        <button id="btn-modal-close" class="modal-close">&times;</button>
+      </div>
+      <div class="modal-body">
+        <!-- Hidden field for editing -->
+        <input type="hidden" id="edit-persona-id" value="">
+
+        <!-- Name -->
+        <div class="form-group">
+          <label for="persona-name">Persona Name</label>
+          <input type="text" id="persona-name" class="form-control" placeholder="e.g. Startup, Corporate, LinkedIn" maxlength="40">
+        </div>
+
+        <!-- Tone -->
+        <div class="form-group">
+          <label>Tone</label>
+          <div class="tone-selector">
+            <button type="button" class="tone-chip" data-tone="Casual">Casual</button>
+            <button type="button" class="tone-chip active" data-tone="Professional">Professional</button>
+            <button type="button" class="tone-chip" data-tone="Formal">Formal</button>
+          </div>
+        </div>
+
+        <!-- Set as Default -->
+        <div class="form-group" style="display:flex; align-items:center; gap:8px;">
+          <input type="checkbox" id="persona-default" style="width:16px; height:16px; accent-color: var(--primary);">
+          <label for="persona-default" style="margin:0; cursor:pointer;">Set as default persona</label>
+        </div>
+
+        <!-- Writing Samples -->
+        <div class="form-group">
+          <label>Writing Samples</label>
+          <p class="form-hint" style="margin-bottom:12px;">Paste 3-5 examples of emails or messages you've written. The AI will extract your unique style patterns.</p>
+          <div id="samples-container" class="samples-container">
+            <!-- Populated by JS -->
+          </div>
+          <button type="button" id="btn-add-sample" class="btn-add-sample" style="margin-top:8px;">+ Add Sample</button>
+        </div>
+
+        <!-- Training Status -->
+        <div id="training-status" class="hidden">
+          <!-- Populated by JS -->
+        </div>
+
+        <!-- Fingerprint Preview -->
+        <div id="fingerprint-section" class="form-group hidden">
+          <label>Style Fingerprint</label>
+          <div id="fingerprint-preview" class="fingerprint-preview"></div>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button id="btn-modal-cancel" class="btn btn-ghost">Cancel</button>
+        <button id="btn-train-persona" class="btn btn-primary">Train & Save Persona</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Delete Confirmation Modal -->
+  <div id="delete-modal" class="modal-overlay">
+    <div class="modal" style="max-width:420px;">
+      <div class="modal-header">
+        <h2>Delete Persona</h2>
+        <button id="btn-delete-close" class="modal-close">&times;</button>
+      </div>
+      <div class="modal-body">
+        <p style="color:var(--on-surface-variant); font-size:14px; margin-bottom:16px;">
+          Are you sure you want to delete <strong id="delete-persona-name"></strong>? This will also remove all associated feedback data. This action cannot be undone.
+        </p>
+        <input type="hidden" id="delete-persona-id" value="">
+      </div>
+      <div class="modal-footer">
+        <button id="btn-delete-cancel" class="btn btn-ghost">Cancel</button>
+        <button id="btn-delete-confirm" class="btn" style="background:var(--error); color:white;">Delete Persona</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script type="module" src="personas.js"></script>
+</body>
+</html>

@@ -4,736 +4,289 @@
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Reword</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Literata:wght@400;600;700&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Literata:ital,wght@0,400;0,600;0,700;1,600&display=swap" rel="stylesheet"/>
   <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0..1,0" rel="stylesheet"/>
   <style>
     /* Design Tokens */
     :root {
-      --bg-color: #f9faf6;
-      --primary-color: #143e2f; /* Darker green for UI */
-      --primary-hover: #0f2e22;
+      --bg-color: #f8f9fa;
+      --primary-color: #0f3b2a; 
+      --primary-hover: #0a291d;
       --text-white: #ffffff;
-      --text-dark: #1b1c1a;
-      --text-muted: #414844;
-      --border-color: #c1c8c2;
-      --focus-ring: #1b4332;
+      --text-dark: #1e293b;
+      --text-muted: #475569;
+      --border-color: #cbd5e1;
+      --focus-ring: #0f3b2a;
       --card-bg: #ffffff;
-      --card-low-bg: #f5f3f0;
-      --border-radius-card: 12px;
+      --card-low-bg: #f1f5f9;
+      --border-radius-card: 16px;
       --border-radius-btn: 8px;
-      --shadow-sm: 0 2px 4px rgba(0,0,0,0.02);
-      --shadow-md: 0 4px 12px rgba(45,45,45,0.05);
     }
 
-    /* Reset & Base Styles */
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
-      width: 380px;
-      height: 600px;
+      width: 380px; height: 600px;
       background-color: var(--bg-color);
       font-family: 'Inter', sans-serif;
       color: var(--text-dark);
-      overflow: hidden;
-      display: flex;
-      flex-direction: column;
+      overflow: hidden; display: flex; flex-direction: column;
     }
-
-    /* Typography */
-    h1, h2, h3, .font-serif {
+    
+    h1, h2, h3, .font-serif, .logo-text, .auth-quote {
       font-family: 'Literata', serif;
     }
 
-    /* Common Components */
     .btn-primary {
-      width: 100%;
-      background-color: var(--primary-color);
-      color: var(--text-white);
-      font-family: 'Inter', sans-serif;
-      font-weight: 600;
-      font-size: 14px;
-      padding: 12px 16px;
-      border: none;
-      border-radius: var(--border-radius-btn);
-      cursor: pointer;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      gap: 6px;
-      transition: background-color 0.2s ease, transform 0.1s ease, box-shadow 0.2s ease;
-      box-shadow: var(--shadow-sm);
+      width: 100%; background-color: var(--primary-color); color: var(--text-white);
+      font-family: 'Inter', sans-serif; font-weight: 600; font-size: 14px;
+      padding: 12px 16px; border: none; border-radius: var(--border-radius-btn);
+      cursor: pointer; display: flex; justify-content: center; align-items: center; gap: 6px;
     }
-    .btn-primary:hover {
-      background-color: var(--primary-hover);
-    }
-    .btn-primary:active {
-      transform: scale(0.98);
-    }
+    .btn-primary:hover { background-color: var(--primary-hover); }
     .btn-secondary {
-      width: 100%;
-      background-color: var(--card-low-bg);
-      color: var(--text-dark);
-      font-family: 'Inter', sans-serif;
-      font-weight: 600;
-      font-size: 13px;
-      padding: 10px 16px;
-      border: 1px solid rgba(193, 200, 194, 0.5);
-      border-radius: var(--border-radius-btn);
-      cursor: pointer;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      gap: 6px;
-      transition: background-color 0.2s ease, transform 0.1s ease;
+      width: 100%; background-color: var(--card-low-bg); color: var(--text-dark);
+      font-family: 'Inter', sans-serif; font-weight: 600; font-size: 13px;
+      padding: 10px 16px; border: 1px solid var(--border-color); border-radius: var(--border-radius-btn);
+      cursor: pointer; display: flex; justify-content: center; align-items: center; gap: 6px;
     }
-    .btn-secondary:hover {
-      background-color: #e2e6e3;
-    }
-    .btn-secondary:active {
-      transform: scale(0.98);
-    }
+    .btn-secondary:hover { background-color: #e2e8f0; }
     .btn-link {
-      background: none;
-      border: none;
-      color: var(--primary-color);
-      font-family: 'Inter', sans-serif;
-      font-weight: 500;
-      font-size: 13px;
-      cursor: pointer;
-      text-decoration: underline;
-      transition: color 0.2s ease;
+      background: none; border: none; color: var(--text-muted);
+      font-family: 'Inter', sans-serif; font-weight: 500; font-size: 13px;
+      cursor: pointer; text-decoration: none;
     }
-    .btn-link:hover {
-      color: var(--primary-hover);
-    }
-
+    .btn-link:hover { color: var(--text-dark); }
     .icon-btn {
-      background: none;
-      border: none;
-      color: var(--text-muted);
-      cursor: pointer;
-      padding: 6px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: background-color 0.2s ease, color 0.2s ease;
+      background: none; border: none; color: var(--text-muted); cursor: pointer;
+      padding: 6px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
     }
-    .icon-btn:hover {
-      background-color: var(--card-low-bg);
-      color: var(--primary-color);
-    }
+    .icon-btn:hover { background-color: var(--card-low-bg); color: var(--text-dark); }
 
-    /* Layout Containers */
-    .app-container {
-      width: 380px;
-      height: 600px;
-      display: flex;
-      flex-direction: column;
-      position: relative;
-    }
-    .screen {
-      display: flex;
-      flex-direction: column;
-      height: 100%;
-      width: 100%;
-    }
+    .app-container { width: 380px; height: 600px; display: flex; flex-direction: column; position: relative; }
+    .screen { display: flex; flex-direction: column; height: 100%; width: 100%; }
+    
     .header {
-      height: 52px;
-      border-bottom: 1px solid rgba(193, 200, 194, 0.3);
-      padding: 0 16px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      background-color: var(--card-bg);
-      z-index: 10;
+      height: 60px; padding: 0 16px; display: flex; align-items: center; justify-content: space-between;
+      border-bottom: 1px solid var(--border-color); background-color: transparent;
     }
-    .header h1 {
-      font-size: 18px;
-      font-weight: 700;
-      color: var(--primary-color);
-      display: flex;
-      align-items: center;
-      gap: 6px;
+    .header-no-border { border-bottom: none; }
+    .logo-group { display: flex; align-items: center; gap: 8px; }
+    .logo-box {
+      width: 28px; height: 28px; background-color: var(--primary-color); border-radius: 6px;
+      display: flex; align-items: center; justify-content: center;
+      color: white; font-family: 'Literata', serif; font-weight: 700; font-size: 16px;
     }
-    .header-left {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-    .content {
-      flex: 1;
-      overflow-y: auto;
-      padding: 16px;
-      display: flex;
-      flex-direction: column;
-    }
+    .logo-text { font-size: 18px; font-weight: 700; color: var(--text-dark); }
+    
+    .content { flex: 1; overflow-y: auto; padding: 16px; display: flex; flex-direction: column; }
+    
     .footer {
-      height: 36px;
-      border-top: 1px solid rgba(193, 200, 194, 0.3);
-      padding: 0 16px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      background-color: var(--card-low-bg);
-      font-size: 11px;
-      color: var(--text-muted);
+      height: 40px; padding: 0 16px; display: flex; align-items: center; justify-content: space-between;
+      background-color: #eff2f5; font-size: 11px; color: var(--text-muted); border-top: 1px solid var(--border-color);
     }
+    .footer-left { display: flex; align-items: center; gap: 6px; }
+    .footer-logo { font-family: 'Literata', serif; font-weight: 700; font-size: 14px; color: var(--primary-color); }
+    .badge-free { background-color: #bbf7d0; color: #166534; font-weight: 700; padding: 2px 8px; border-radius: 12px; font-size: 10px; }
 
-    /* Screen 1: Main Editor */
+    /* Auth Screen */
+    .auth-content { align-items: center; padding-top: 40px; }
+    .auth-quote { font-size: 16px; font-style: italic; font-weight: 600; margin-bottom: 12px; color: var(--text-dark); }
+    .quote-divider { width: 40px; height: 2px; background-color: #cbd5e1; margin-bottom: 24px; }
+    .auth-image { width: 200px; height: 200px; object-fit: cover; border-radius: 16px; margin-bottom: 32px; box-shadow: var(--shadow-sm); }
+    .auth-box {
+      background-color: #eff2f9; width: 100%; border-radius: 12px; padding: 24px 16px;
+      display: flex; flex-direction: column; align-items: center; border: 1px solid #e2e8f0;
+    }
+    .auth-box h3 { font-family: 'Inter', sans-serif; font-size: 15px; font-weight: 600; margin-bottom: 16px; color: var(--primary-color); }
+
+    /* Main Screen */
+    .user-greeting { display: flex; align-items: center; gap: 6px; }
+    .user-greeting h2 { font-size: 18px; font-weight: 700; color: var(--text-dark); }
+    .header-right { display: flex; align-items: center; gap: 8px; }
+    .user-avatar-small {
+      width: 28px; height: 28px; background-color: var(--primary-color); border-radius: 50%;
+      display: flex; align-items: center; justify-content: center; color: white; font-size: 11px; font-weight: 600;
+    }
+    .tone-section { margin-bottom: 12px; }
+    .tone-label { font-size: 10px; font-weight: 700; color: var(--text-muted); letter-spacing: 0.5px; margin-bottom: 8px; display: block; }
+    .persona-select {
+      width: 100%; padding: 8px 12px; border-radius: 8px; font-size: 13px; font-weight: 500;
+      border: 1px solid var(--border-color); background-color: var(--card-bg); color: var(--text-dark);
+      cursor: pointer; font-family: 'Inter', sans-serif; appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23475569' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+      background-repeat: no-repeat; background-position: right 12px center;
+    }
+    .persona-select:focus { outline: none; border-color: var(--primary-color); }
+    .persona-manage-link {
+      display: block; text-align: right; font-size: 11px; color: var(--primary-color);
+      margin-top: 4px; cursor: pointer; font-weight: 500; background: none; border: none;
+      font-family: 'Inter', sans-serif;
+    }
+    .persona-manage-link:hover { text-decoration: underline; }
+    
     .editor-wrapper {
-      position: relative;
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      margin-bottom: 16px;
+      position: relative; flex: 1; display: flex; flex-direction: column; margin-bottom: 12px;
+      background-color: var(--card-bg); border: 1px solid var(--border-color); border-radius: 8px; overflow: hidden;
     }
     .editor-textarea {
-      width: 100%;
-      flex: 1;
-      min-height: 180px;
-      border: 1px solid var(--border-color);
-      border-radius: var(--border-radius-card);
-      padding: 12px;
-      font-family: 'Inter', sans-serif;
-      font-size: 14px;
-      color: var(--text-dark);
-      background-color: var(--card-bg);
-      resize: none;
-      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+      width: 100%; flex: 1; min-height: 180px; padding: 12px; font-family: 'Inter', sans-serif; font-size: 13px;
+      border: none; resize: none; outline: none; background: transparent; color: var(--text-dark);
     }
-    .editor-textarea:focus {
-      outline: none;
-      border-color: var(--focus-ring);
-      box-shadow: 0 0 0 1px var(--focus-ring);
-    }
-    .usage-text {
-      text-align: center;
-      font-size: 12px;
-      font-weight: 500;
-      color: var(--primary-color);
-      margin-top: 8px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 4px;
-    }
+    .char-count { position: absolute; bottom: 8px; right: 12px; font-size: 11px; color: var(--text-muted); }
+    .deai-btn { padding: 14px; font-size: 15px; border-radius: 8px; }
+    .spark { font-variation-settings: 'FILL' 1; color: #fbbf24; font-size: 18px; }
+    
+    .usage-text { text-align: center; font-size: 12px; font-weight: 500; color: var(--text-muted); margin-top: 12px; display: flex; align-items: center; justify-content: center; gap: 4px; }
     .info-card {
-      background-color: var(--card-low-bg);
-      border: 1px solid rgba(193, 200, 194, 0.2);
-      border-radius: var(--border-radius-card);
-      padding: 12px;
-      font-size: 12px;
-      line-height: 1.5;
-      color: var(--text-muted);
-      margin-top: 16px;
-      display: flex;
-      align-items: flex-start;
-      gap: 8px;
+      background-color: #e6f7ed; border: 1px solid #bbf7d0; border-radius: 8px; padding: 12px;
+      font-size: 12px; color: #166534; margin-top: 16px; display: flex; align-items: flex-start; gap: 8px; line-height: 1.4;
     }
-    .info-card .material-symbols-outlined {
-      color: var(--primary-color);
-      font-size: 18px;
-    }
+    .info-card .material-symbols-outlined { font-size: 18px; }
 
-    /* Screen 2: Loading Overlay */
-    .loading-overlay {
-      position: absolute;
-      inset: 0;
-      background-color: rgba(255, 255, 255, 0.85);
-      z-index: 100;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      gap: 16px;
-    }
-    .spinner {
-      width: 36px;
-      height: 36px;
-      border: 4px solid rgba(27, 67, 50, 0.1);
-      border-top-color: var(--primary-color);
-      border-radius: 50%;
-      animation: spin 0.8s linear infinite;
-    }
-    .loading-text {
-      font-size: 16px;
-      font-weight: 600;
-      color: var(--primary-color);
-      animation: pulse 1.5s ease-in-out infinite;
-    }
-
-    /* Screen 3: Result Comparison */
-    .comparison-wrapper {
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-      margin-bottom: 16px;
-    }
-    .comparison-title {
-      font-size: 11px;
-      font-weight: 600;
-      color: var(--primary-color);
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      display: flex;
-      align-items: center;
-      gap: 4px;
-    }
-    .comp-card {
-      border-radius: var(--border-radius-card);
-      padding: 12px;
-      box-shadow: var(--shadow-sm);
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-    }
-    .comp-card.original {
-      background-color: var(--card-low-bg);
-      border: 1px solid rgba(193, 200, 194, 0.3);
-    }
-    .comp-card.rewritten {
-      background-color: var(--card-bg);
-      border: 1px solid rgba(27, 67, 50, 0.15);
-      box-shadow: var(--shadow-md);
-      position: relative;
-    }
-    .comp-card-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      font-size: 12px;
-      font-weight: 600;
-    }
-    .comp-card-header.original-header {
-      color: var(--text-muted);
-      opacity: 0.7;
-    }
-    .comp-card-header.rewritten-header {
-      color: var(--primary-color);
-    }
-    .badge-clarity {
-      background-color: #cce6d0;
-      color: #0e6c4a;
-      font-size: 9px;
-      font-weight: 700;
-      padding: 2px 6px;
-      border-radius: 4px;
-      text-transform: uppercase;
-      letter-spacing: 0.02em;
-    }
-    .original-text {
-      font-size: 13px;
-      line-height: 1.5;
-      color: var(--text-muted);
-      text-decoration: line-through;
-      opacity: 0.6;
-    }
-    .rewritten-text {
-      font-size: 13px;
-      line-height: 1.5;
-      color: var(--text-dark);
-      white-space: pre-wrap;
-    }
-    .comp-feedback {
-      display: flex;
-      justify-content: flex-end;
-      gap: 12px;
-      padding-top: 8px;
-      border-top: 1px solid rgba(193, 200, 194, 0.2);
-    }
-    .feedback-icon {
-      font-size: 18px;
-      color: var(--text-muted);
-      opacity: 0.4;
-      cursor: pointer;
-      transition: opacity 0.2s ease, transform 0.1s ease;
-    }
-    .feedback-icon:hover {
-      opacity: 1;
-      color: var(--primary-color);
-    }
-    .feedback-icon.active {
-      opacity: 1;
-      color: var(--primary-color);
-      font-variation-settings: 'FILL' 1;
-    }
-    .result-actions {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 10px;
-      margin-top: auto;
-    }
-
-    /* Screen 4: Settings */
-    .branding-section {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      padding: 16px 0;
-    }
-    .branding-icon {
-      width: 54px;
-      height: 54px;
-      background-color: var(--primary-color);
-      border-radius: 12px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    .branding-icon span {
-      color: var(--text-white);
-      font-family: 'Literata', serif;
-      font-size: 32px;
-      font-weight: 700;
-    }
-    .settings-card {
-      background-color: var(--card-bg);
-      border-radius: var(--border-radius-card);
-      padding: 16px;
-      border: 1px solid rgba(193, 200, 194, 0.3);
-      box-shadow: var(--shadow-md);
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-    }
-    .settings-card label {
-      font-size: 12px;
-      font-weight: 600;
-      color: var(--text-muted);
-      display: flex;
-      align-items: center;
-      gap: 4px;
-    }
-    .settings-input-wrapper {
-      position: relative;
-    }
-    .settings-input-wrapper .material-symbols-outlined {
-      position: absolute;
-      left: 12px;
-      top: 50%;
-      transform: translateY(-50%);
-      color: var(--text-muted);
-      font-size: 18px;
-    }
-    .settings-input {
-      width: 100%;
-      border: 1px solid var(--border-color);
-      border-radius: var(--border-radius-btn);
-      padding: 10px 12px 10px 38px;
-      font-size: 13px;
-      font-family: 'Inter', sans-serif;
-      transition: border-color 0.2s ease, box-shadow 0.2s ease;
-    }
-    .settings-input:focus {
-      outline: none;
-      border-color: var(--focus-ring);
-      box-shadow: 0 0 0 1px var(--focus-ring);
-    }
-    .settings-desc {
-      font-size: 11px;
-      color: var(--text-muted);
-      line-height: 1.4;
-    }
-    .manage-account-row {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 12px;
-      margin-top: 12px;
-      border-radius: var(--border-radius-btn);
-      cursor: pointer;
-      transition: background-color 0.2s ease;
-    }
-    .manage-account-row:hover {
-      background-color: var(--card-low-bg);
-    }
-    .manage-account-left {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      font-size: 13px;
-      font-weight: 600;
-      color: var(--text-dark);
-    }
-    .manage-account-left span {
-      color: var(--text-dark);
-    }
+    /* Result Screen */
+    .check-icon { color: #10b981; font-variation-settings: 'FILL' 1; }
+    .header-left { display: flex; align-items: center; gap: 8px; }
+    .header-left h2 { font-size: 18px; font-weight: 700; color: var(--text-dark); }
     
-    .free-tier-card {
-      background-color: var(--card-bg);
-      border-radius: var(--border-radius-card);
-      padding: 16px;
-      border: 1px solid rgba(193, 200, 194, 0.3);
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-      margin-top: 16px;
-    }
-    .free-tier-header {
-      font-family: 'Literata', serif;
-      font-weight: 700;
-      font-size: 16px;
-      color: var(--text-dark);
-    }
-    .free-tier-stats {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      font-size: 12px;
-    }
-    .free-tier-stats .label {
-      color: var(--text-muted);
-    }
-    .free-tier-stats .value {
-      font-weight: 700;
-      color: var(--text-dark);
-    }
-    .progress-bar-bg {
-      height: 6px;
-      background-color: #f0f0f0;
-      border-radius: 3px;
-      width: 100%;
-      overflow: hidden;
-    }
-    .progress-bar-fill {
-      height: 100%;
-      background-color: var(--primary-color);
-      border-radius: 3px;
-      transition: width 0.3s ease;
-    }
+    .comparison-divider { display: flex; align-items: center; gap: 8px; margin-bottom: 16px; }
+    .comp-label { font-size: 10px; font-weight: 700; color: var(--text-muted); letter-spacing: 0.5px; }
+    .comp-line { flex: 1; height: 1px; background-color: var(--border-color); }
     
-    .user-profile-header {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      margin-bottom: 16px;
+    .comp-card { border-radius: 8px; padding: 12px; margin-bottom: 12px; }
+    .comp-card.original { background-color: var(--card-low-bg); }
+    .comp-card.rewritten { background-color: var(--card-bg); border: 1px solid var(--border-color); box-shadow: var(--shadow-sm); }
+    
+    .comp-card-header { font-size: 11px; font-weight: 600; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; }
+    .original-header { color: var(--text-muted); }
+    .rewritten-title { display: flex; align-items: center; gap: 8px; color: var(--primary-color); font-weight: 700; font-size: 12px; }
+    .badge-prof { background-color: #dcfce7; color: #166534; font-size: 9px; padding: 2px 6px; border-radius: 12px; letter-spacing: 0.5px; }
+    
+    .original-text { font-size: 13px; color: var(--text-muted); text-decoration: line-through; font-style: italic; line-height: 1.5; }
+    .rewritten-text { font-size: 13px; color: var(--text-dark); line-height: 1.5; }
+    
+    .btn-copy { background: none; border: none; font-size: 11px; font-weight: 600; color: var(--text-muted); display: flex; align-items: center; gap: 4px; cursor: pointer; }
+    .btn-copy:hover { color: var(--text-dark); }
+    
+    .feedback-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; padding: 0 4px; }
+    .feedback-text { font-size: 12px; color: var(--text-muted); }
+    .comp-feedback { display: flex; gap: 8px; }
+    .feedback-icon { font-size: 20px; color: var(--text-muted); cursor: pointer; }
+    .feedback-icon:hover { color: var(--text-dark); }
+    .feedback-icon.active { color: var(--primary-color); font-variation-settings: 'FILL' 1; }
+    
+    .result-actions { display: flex; flex-direction: column; gap: 12px; margin-top: auto; }
+    .replace-btn { font-size: 14px; }
+    
+    /* Upgrade Screen */
+    .upgrade-content { align-items: center; text-align: center; padding-top: 32px; }
+    .upgrade-icon-bg { width: 56px; height: 56px; background-color: #e2e8f0; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-bottom: 16px; }
+    .upgrade-icon-bg .material-symbols-outlined { font-size: 28px; color: var(--primary-color); font-variation-settings: 'FILL' 1; }
+    .upgrade-h2 { font-size: 18px; font-weight: 700; margin-bottom: 8px; }
+    .upgrade-p { font-size: 13px; color: var(--text-muted); margin-bottom: 24px; line-height: 1.4; padding: 0 16px; }
+    
+    .pro-card {
+      background-color: var(--card-bg); border: 1px solid var(--primary-color); border-radius: 12px;
+      padding: 24px 16px; width: 100%; position: relative; box-shadow: var(--shadow-sm);
     }
-    .user-avatar {
-      width: 40px;
-      height: 40px;
-      background-color: var(--primary-color);
-      border-radius: 50%;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      color: white;
-      font-weight: 700;
-      font-size: 14px;
+    .most-badge {
+      position: absolute; top: -10px; left: 50%; transform: translateX(-50%);
+      background-color: var(--primary-color); color: white; font-size: 10px; font-weight: 700;
+      padding: 4px 12px; border-radius: 12px; letter-spacing: 0.5px;
     }
-    .user-info-text {
-      display: flex;
-      flex-direction: column;
-    }
-    .user-info-name {
-      font-size: 14px;
-      font-weight: 600;
-      color: var(--text-dark);
-    }
-    .user-info-email {
-      font-size: 11px;
-      color: var(--text-muted);
-    }
+    .pro-h3 { font-size: 20px; font-weight: 700; color: var(--primary-color); margin-bottom: 4px; text-align: left; font-family: 'Literata', serif; }
+    .pro-price { text-align: left; margin-bottom: 16px; }
+    .price-val { font-size: 32px; font-weight: 700; color: var(--primary-color); }
+    .price-period { font-size: 13px; color: var(--text-muted); margin-left: 4px; }
+    
+    .pro-features { list-style: none; text-align: left; margin-bottom: 20px; }
+    .pro-features li { font-size: 13px; color: var(--text-dark); display: flex; align-items: center; gap: 8px; margin-bottom: 10px; }
+    .pro-features .check { color: #10b981; font-size: 18px; font-variation-settings: 'FILL' 1; }
 
-    /* Screen 5: Upgrade */
-    .upgrade-card {
-      background-color: var(--card-bg);
-      border-radius: var(--border-radius-card);
-      padding: 20px;
-      border: 1px solid rgba(193, 200, 194, 0.3);
-      box-shadow: var(--shadow-md);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 16px;
-      position: relative;
-      overflow: hidden;
-    }
-    .upgrade-glow {
-      position: absolute;
-      top: -30px;
-      right: -30px;
-      width: 100px;
-      height: 100px;
-      background-color: #cce6d0;
-      opacity: 0.3;
-      border-radius: 50%;
-      filter: blur(20px);
-      pointer-events: none;
-    }
-    .upgrade-badge {
-      background-color: var(--primary-color);
-      color: var(--text-white);
-      font-size: 9px;
-      font-weight: 700;
-      padding: 2px 8px;
-      border-radius: 20px;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-    }
-    .upgrade-icon-wrapper {
-      position: relative;
-      width: 72px;
-      height: 72px;
-      background-color: rgba(27, 67, 50, 0.05);
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    .upgrade-icon-wrapper span.main-icon {
-      font-size: 36px;
-      color: var(--primary-color);
-      font-variation-settings: 'FILL' 1;
-    }
-    .upgrade-icon-wrapper .badge-pro {
-      position: absolute;
-      bottom: -2px;
-      right: -2px;
-      background-color: var(--primary-color);
-      color: var(--text-white);
-      font-size: 8px;
-      font-weight: 700;
-      padding: 2px 6px;
-      border-radius: 10px;
-    }
-    .upgrade-title-section h2 {
-      font-size: 20px;
-      font-weight: 700;
-      color: var(--text-dark);
-      margin-bottom: 4px;
-    }
-    .upgrade-title-section p {
-      font-size: 13px;
-      color: var(--text-muted);
-      line-height: 1.4;
-    }
-    .pricing-box {
-      width: 100%;
-      background-color: var(--card-low-bg);
-      border: 1px solid rgba(193, 200, 194, 0.5);
-      border-radius: var(--border-radius-btn);
-      padding: 12px;
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-    }
-    .pricing-header {
-      font-size: 10px;
-      font-weight: 700;
-      color: var(--primary-color);
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-    }
-    .pricing-amount {
-      display: flex;
-      align-items: baseline;
-      justify-content: center;
-      gap: 2px;
-    }
-    .pricing-amount .price {
-      font-size: 28px;
-      font-weight: 700;
-      color: var(--primary-color);
-    }
-    .pricing-amount .period {
-      font-size: 12px;
-      color: var(--text-muted);
-    }
-    .bullet-list {
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-      align-items: flex-start;
-      margin-top: 4px;
-      padding: 0 4px;
-    }
-    .bullet-item {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      font-size: 13px;
-      color: var(--text-muted);
-      text-align: left;
-    }
-    .bullet-item span {
-      color: var(--primary-color);
-      font-size: 16px;
-    }
-
-    /* Animations */
-    @keyframes spin {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
-    }
-    @keyframes pulse {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0.5; }
-    }
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(-4px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
-
-    /* Copy button */
-    .btn-copy {
-      background: none;
-      border: none;
-      cursor: pointer;
-      padding: 2px 4px;
-      border-radius: 4px;
-      display: flex;
-      align-items: center;
-      gap: 4px;
-      color: var(--primary-color);
-      font-size: 11px;
-      font-weight: 600;
-      font-family: 'Inter', sans-serif;
-      transition: background-color 0.15s ease, color 0.15s ease;
-    }
-    .btn-copy:hover {
-      background-color: #e8f5ed;
-    }
-    .btn-copy .material-symbols-outlined {
-      font-size: 15px;
-    }
-    .btn-copy.copied {
-      color: #0e6c4a;
-    }
-
-    .hidden {
-      display: none !important;
-    }
+    /* Loading Overlay */
+    .loading-overlay { position: absolute; inset: 0; background: rgba(255,255,255,0.9); z-index: 100; display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 16px; }
+    .spinner { width: 36px; height: 36px; border: 4px solid #e2e8f0; border-top-color: var(--primary-color); border-radius: 50%; animation: spin 0.8s linear infinite; }
+    .loading-text { font-size: 14px; font-weight: 600; color: var(--primary-color); animation: pulse 1.5s ease-in-out infinite; }
+    
+    @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+    @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
+    
+    .hidden { display: none !important; }
+    
+    /* Settings overrides */
+    .settings-card { background-color: var(--card-bg); border-radius: var(--border-radius-card); padding: 16px; border: 1px solid var(--border-color); display: flex; flex-direction: column; gap: 12px; }
+    .settings-input { width: 100%; border: 1px solid var(--border-color); border-radius: var(--border-radius-btn); padding: 10px; font-size: 13px; }
+    .manage-account-row { display: flex; align-items: center; justify-content: space-between; padding: 12px; border-radius: var(--border-radius-btn); cursor: pointer; }
+    .manage-account-row:hover { background-color: var(--card-low-bg); }
+    .free-tier-card { background-color: var(--card-bg); border-radius: var(--border-radius-card); padding: 16px; border: 1px solid var(--border-color); display: flex; flex-direction: column; gap: 12px; margin-top: 16px; }
+    .progress-bar-bg { height: 6px; background-color: #e2e8f0; border-radius: 3px; width: 100%; overflow: hidden; }
+    .progress-bar-fill { height: 100%; background-color: var(--primary-color); border-radius: 3px; }
   </style>
 </head>
 <body>
   <div class="app-container">
 
-    <!-- Screen 1: Main Editor -->
-    <div id="screen-main" class="screen">
-      <header class="header">
-        <h1>Reword</h1>
-        <button id="btn-goto-settings" class="icon-btn" aria-label="Settings">
+    <!-- Screen 0: Auth Prompt -->
+    <div id="screen-auth" class="screen hidden">
+      <header class="header header-no-border">
+        <div class="logo-group">
+          <div class="logo-box">R</div>
+          <span class="logo-text">Reword</span>
+        </div>
+        <button id="btn-goto-settings-from-auth" class="icon-btn">
           <span class="material-symbols-outlined">settings</span>
         </button>
       </header>
-      <main class="content">
+      <main class="content auth-content">
+        <div class="auth-quote">"Write like you. Not like AI."</div>
+        <div class="quote-divider"></div>
+        <img src="assets/notebook.png" class="auth-image" alt="Notebook" />
+        <div class="auth-box">
+          <h3>Sign in to start rewriting</h3>
+          <button id="btn-auth-signin" class="btn-primary">Sign in to Reword</button>
+          <a id="btn-auth-signup" href="#" class="hidden">Create account &rarr;</a>
+        </div>
+      </main>
+      <footer class="footer">
+        <div class="footer-left">
+          <span class="footer-logo hidden">Reword</span>
+          <span>v1.0 • Ready</span>
+        </div>
+        <span class="badge-free">FREE</span>
+      </footer>
+    </div>
+
+    <!-- Screen 1: Main Editor -->
+    <div id="screen-main" class="screen">
+      <header class="header">
+        <div class="user-greeting">
+          <h2 id="main-greeting">Hey, User</h2>
+          <span class="emoji">👋</span>
+        </div>
+        <div class="header-right">
+          <button id="btn-goto-settings" class="icon-btn">
+            <span class="material-symbols-outlined">settings</span>
+          </button>
+          <div class="user-avatar-small header-avatar">U</div>
+        </div>
+      </header>
+      <main class="content main-content">
+        <div class="tone-section">
+          <label class="tone-label">PERSONA</label>
+          <select id="persona-select" class="persona-select">
+            <option value="" data-tone="Professional">Default (Professional)</option>
+          </select>
+          <button id="btn-manage-personas" class="persona-manage-link">Manage Personas →</button>
+        </div>
         <div class="editor-wrapper">
           <textarea id="editor-input" class="editor-textarea" placeholder="Paste your AI-written text here..."></textarea>
+          <div class="char-count">0 / 2000</div>
         </div>
-        <div class="main-actions">
-          <button id="btn-deai" class="btn-primary">
-            <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">auto_fix_high</span>
-            De-AI This
-          </button>
-          <div class="usage-text">
-            <span class="material-symbols-outlined" style="font-size: 14px;">bolt</span>
-            <span id="usage-free-text">3 of 3 free uses left</span>
-          </div>
+        <button id="btn-deai" class="btn-primary deai-btn">
+          <span class="material-symbols-outlined spark">auto_awesome</span> De-AI This
+        </button>
+        <div class="usage-text">
+          <span class="material-symbols-outlined">bolt</span>
+          <span id="usage-free-text">3 of 3 free rewrites left</span>
         </div>
         <div class="info-card">
           <span class="material-symbols-outlined">info</span>
@@ -741,8 +294,11 @@
         </div>
       </main>
       <footer class="footer">
-        <span>v1.0 • Ready</span>
-        <span id="footer-usage-1">Usage: 0/3</span>
+        <div class="footer-left">
+          <span class="footer-logo">Reword</span>
+          <span>v1.0 • Ready</span>
+        </div>
+        <span class="badge-free">FREE</span>
       </footer>
     </div>
 
@@ -756,57 +312,58 @@
     <div id="screen-result" class="screen hidden">
       <header class="header">
         <div class="header-left">
-          <span class="material-symbols-outlined" style="color: #0e6c4a; font-variation-settings: 'FILL' 1;">check_circle</span>
-          <h1>Ready to send</h1>
+          <span class="material-symbols-outlined check-icon">check_circle</span>
+          <h2>Ready to send</h2>
         </div>
-        <button id="btn-goto-settings-from-result" class="icon-btn" aria-label="Settings">
+        <button id="btn-goto-settings-from-result" class="icon-btn">
           <span class="material-symbols-outlined">settings</span>
         </button>
       </header>
       <main class="content">
-        <div class="comparison-wrapper">
-          <div class="comparison-title">
-            <span class="material-symbols-outlined" style="font-size: 14px;">compare_arrows</span>
-            Comparison
-          </div>
-          <!-- Rewritten Card (shown first) -->
-          <div class="comp-card rewritten">
-            <div class="comp-card-header rewritten-header">
+        <div class="comparison-divider">
+          <span class="comp-label">COMPARISON</span>
+          <div class="comp-line"></div>
+        </div>
+        
+        <div class="comp-card original">
+          <div class="comp-card-header original-header">Original</div>
+          <p id="result-original-text" class="original-text"></p>
+        </div>
+
+        <div class="comp-card rewritten">
+          <div class="comp-card-header rewritten-header">
+            <div class="rewritten-title">
               <span>Rewritten</span>
-              <div style="display:flex;align-items:center;gap:6px;">
-                <span class="badge-clarity">Clarity</span>
-                <button id="btn-copy" class="btn-copy" aria-label="Copy rewritten text">
-                  <span class="material-symbols-outlined">content_copy</span>
-                  Copy
-                </button>
-              </div>
+              <span class="badge-prof">PROFESSIONAL</span>
             </div>
-            <p id="result-rewritten-text" class="rewritten-text"></p>
-            <div class="comp-feedback">
-              <span id="feedback-thumb-up" class="material-symbols-outlined feedback-icon">thumb_up</span>
-              <span id="feedback-thumb-down" class="material-symbols-outlined feedback-icon">thumb_down</span>
-            </div>
+            <button id="btn-copy" class="btn-copy">
+              <span class="material-symbols-outlined">content_copy</span> Copy
+            </button>
           </div>
-          <!-- Original Card (shown below) -->
-          <div class="comp-card original">
-            <div class="comp-card-header original-header">
-              <span>Original</span>
-              <span class="material-symbols-outlined" style="font-size: 14px;">history</span>
-            </div>
-            <p id="result-original-text" class="original-text"></p>
+          <p id="result-rewritten-text" class="rewritten-text"></p>
+        </div>
+
+        <div class="feedback-row">
+          <span class="feedback-text">Was this helpful?</span>
+          <div class="comp-feedback">
+            <span id="feedback-thumb-up" class="material-symbols-outlined feedback-icon">thumb_up</span>
+            <span id="feedback-thumb-down" class="material-symbols-outlined feedback-icon">thumb_down</span>
           </div>
         </div>
+
         <div class="result-actions">
-          <button id="btn-replace" class="btn-primary">
-            <span class="material-symbols-outlined">auto_fix_high</span>
-            Replace Text
+          <button id="btn-replace" class="btn-primary replace-btn">
+            <span class="material-symbols-outlined">edit_square</span> Replace Text
           </button>
-          <button id="btn-discard" class="btn-link">Discard changes</button>
+          <button id="btn-discard" class="btn-link discard-btn">Discard changes</button>
         </div>
       </main>
       <footer class="footer">
-        <span>v1.0 • Ready</span>
-        <span id="footer-usage-3">Usage: 0/3</span>
+        <div class="footer-left">
+          <span class="footer-logo">Reword</span>
+          <span>v1.0 • Ready</span>
+        </div>
+        <span class="badge-free">FREE</span>
       </footer>
     </div>
 
@@ -814,121 +371,84 @@
     <div id="screen-settings" class="screen hidden">
       <header class="header">
         <div class="header-left">
-          <button id="btn-back-settings" class="icon-btn" aria-label="Back">
-            <span class="material-symbols-outlined">arrow_back</span>
+          <button id="btn-back-settings" class="icon-btn">
+            <span class="material-symbols-outlined" style="color: var(--text-dark);">arrow_back</span>
           </button>
-          <h1>Settings</h1>
+          <h2 style="color: var(--primary-color);">Settings</h2>
         </div>
-        <span class="material-symbols-outlined" style="color: var(--primary-color)">settings</span>
+        <div class="header-right">
+          <span class="material-symbols-outlined" style="color: var(--primary-color);">settings</span>
+        </div>
       </header>
       <main class="content">
-        <!-- 1. User Profile -->
         <div id="container-user-profile"></div>
-        
-        <!-- 2. Manage Account -->
         <div id="row-manage-account" class="settings-card" style="margin-top: 16px; flex-direction: row; justify-content: space-between; align-items: center; cursor: pointer;">
-          <div class="manage-account-left">
+          <div style="display:flex; align-items:center; gap:12px; font-weight:600; font-size:13px;">
             <span class="material-symbols-outlined" style="font-weight: 300;">person</span>
             <span>Manage Account</span>
           </div>
           <span class="material-symbols-outlined" style="color: var(--text-muted); font-size: 18px;">chevron_right</span>
         </div>
-
-        <!-- 3. Free Tier -->
         <div id="container-free-tier"></div>
-
-        <!-- Hidden Branding / License Key -->
-        <div class="branding-section" style="display: none;">
-          <div class="branding-icon"><span>R</span></div>
-        </div>
         <div id="license-key-card" class="settings-card" style="display: none;">
-          <label for="license-key-input" style="color: var(--text-dark);">
-            <span class="material-symbols-outlined" style="font-size: 16px;">lock</span>
-            License Key
-          </label>
-          <div class="settings-input-wrapper">
-            <input type="text" id="license-key-input" class="settings-input" style="padding-left:12px;" placeholder="XXXX - XXXX - XXXX - XXXX" />
-          </div>
-          <p class="settings-desc">Unlock premium AI features and increase your monthly usage limit.</p>
-          <button id="btn-activate" class="btn-primary" style="margin-top: 8px;">
-            Activate Pro ⚡
-          </button>
+          <label for="license-key-input">License Key</label>
+          <input type="text" id="license-key-input" class="settings-input" placeholder="XXXX - XXXX" />
+          <button id="btn-activate" class="btn-primary">Activate Pro</button>
         </div>
       </main>
       <footer class="footer">
-        <span>v1.0 • Ready</span>
-        <span id="footer-usage-4">Usage: 0/3</span>
-      </footer>
-    </div>
-
-    <!-- Screen 0: Auth Prompt -->
-    <div id="screen-auth" class="screen hidden">
-      <header class="header">
-        <h1>Reword</h1>
-      </header>
-      <main class="content" style="justify-content: center;">
-        <div class="upgrade-card" style="padding: 32px 20px;">
-          <div class="branding-icon" style="margin-bottom: 8px;">
-            <span>R</span>
-          </div>
-          <h2 style="font-size: 18px; font-weight: 700; color: var(--text-dark); margin-bottom: 4px;">Sign in to use Reword</h2>
-          <button id="btn-auth-signin" class="btn-primary" style="width: 100%; margin-top: 16px;">
-            Sign In
-          </button>
-          <a id="btn-auth-signup" href="#" style="display: block; margin-top: 16px; font-size: 13px; color: var(--text-muted); text-decoration: none;">Create account &rarr;</a>
+        <div class="footer-left">
+          <span class="footer-logo">Reword</span>
+          <span>v1.0 • Ready</span>
         </div>
-      </main>
+        <span class="badge-free">FREE</span>
+      </footer>
     </div>
 
     <!-- Screen 5: Upgrade Prompt -->
     <div id="screen-upgrade" class="screen hidden">
       <header class="header">
-        <h1>Reword</h1>
-        <button id="btn-goto-settings-from-upgrade" class="icon-btn" aria-label="Settings">
-          <span class="material-symbols-outlined">settings</span>
-        </button>
-      </header>
-      <main class="content" style="justify-content: center;">
-        <div class="upgrade-card">
-          <div class="upgrade-glow"></div>
-          <div class="upgrade-icon-wrapper">
-            <span class="material-symbols-outlined main-icon">auto_awesome</span>
-            <div class="badge-pro">PRO</div>
-          </div>
-          <div class="upgrade-title-section">
-            <h2>Free uses exhausted</h2>
-            <p>You've used your 100 free rewrites.</p>
-          </div>
-          <div class="pricing-box">
-            <span class="pricing-header">Premium Access</span>
-            <div class="pricing-amount">
-              <span class="price">₹499</span>
-              <span class="period">/month</span>
-            </div>
-            <div class="bullet-list">
-              <div class="bullet-item">
-                <span class="material-symbols-outlined">check_circle</span>
-                <span>Unlimited rewrites</span>
-              </div>
-              <div class="bullet-item">
-                <span class="material-symbols-outlined">check_circle</span>
-                <span>Works in Gmail + LinkedIn</span>
-              </div>
-              <div class="bullet-item">
-                <span class="material-symbols-outlined">check_circle</span>
-                <span>Cancel anytime</span>
-              </div>
-            </div>
-          </div>
-          <button id="btn-get-pro" class="btn-primary">
-            Get Pro Access
-          </button>
-          <button id="btn-maybe-later" class="btn-link" style="font-size: 12px; text-decoration: none; color: var(--text-muted);">Maybe later</button>
+        <div class="logo-group">
+          <span class="logo-text">Reword</span>
         </div>
+        <div class="header-right">
+          <button id="btn-goto-settings-from-upgrade" class="icon-btn">
+            <span class="material-symbols-outlined">settings</span>
+          </button>
+          <div class="user-avatar-small header-avatar-upg">U</div>
+        </div>
+      </header>
+      <main class="content upgrade-content">
+        <div class="upgrade-icon-bg">
+          <span class="material-symbols-outlined">lock</span>
+        </div>
+        <h2 class="upgrade-h2">You're out of free rewrites</h2>
+        <p class="upgrade-p">Upgrade to Pro for unlimited rewrites and professional editing tools.</p>
+        
+        <div class="pro-card">
+          <div class="most-badge">MOST</div>
+          <h3 class="pro-h3">Pro</h3>
+          <div class="pro-price">
+            <span class="price-val">₹499</span><span class="price-period">/month</span>
+          </div>
+          <ul class="pro-features">
+            <li><span class="material-symbols-outlined check">check_circle</span>Unlimited rewrites</li>
+            <li><span class="material-symbols-outlined check">check_circle</span>All three tone modes</li>
+            <li><span class="material-symbols-outlined check">check_circle</span>Works in Gmail + LinkedIn</li>
+            <li><span class="material-symbols-outlined check">check_circle</span>Priority support</li>
+            <li><span class="material-symbols-outlined check">check_circle</span>Cancel anytime</li>
+          </ul>
+          <button id="btn-get-pro" class="btn-primary">Get Pro Access</button>
+        </div>
+        
+        <button id="btn-maybe-later" class="hidden">Maybe later</button>
       </main>
       <footer class="footer">
-        <span>v1.0 • Ready</span>
-        <span id="footer-usage-5">Usage: 100/100</span>
+        <div class="footer-left">
+          <span class="footer-logo">Reword</span>
+          <span>v1.0 • Ready</span>
+        </div>
+        <span class="badge-free">FREE</span>
       </footer>
     </div>
 

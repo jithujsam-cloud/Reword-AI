@@ -22,8 +22,14 @@
   </nav>
 
   <!-- Dashboard Content -->
-  <div class="dashboard-wrapper" style="display: none;" id="dashboard-content">
+  <div class="dashboard-wrapper" style="display: none; max-width: 960px;" id="dashboard-content">
     
+    <!-- Dashboard Nav Tabs -->
+    <div class="dashboard-nav">
+      <a href="dashboard.html" class="active">Overview</a>
+      <a href="personas.html">Personas</a>
+    </div>
+
     <!-- User Profile Card -->
     <div class="card user-profile">
       <div class="avatar" id="user-avatar">?</div>
@@ -54,11 +60,18 @@
       </div>
     </div>
 
-    <!-- Extension Promo Card -->
+    <!-- Personas CTA Card -->
     <div class="card" style="background-color: var(--success-bg); border-color: var(--success-bg);">
-      <h3 style="font-size: 18px; color: var(--success-text); margin-bottom: 8px;">Using the Chrome Extension?</h3>
-      <p style="color: var(--success-text); margin-bottom: 16px;">Your account is automatically synced with the extension.</p>
-      <a href="https://chrome.google.com/webstore" target="_blank" class="btn btn-primary" style="background-color: var(--success-text);">Download Extension &rarr;</a>
+      <h3 style="font-size: 18px; color: var(--success-text); margin-bottom: 8px;">✍️ Voice Learning</h3>
+      <p style="color: var(--success-text); margin-bottom: 16px;">Create personas and train the AI to write exactly like you. Manage your writing voices and see performance analytics.</p>
+      <a href="personas.html" class="btn btn-primary" style="background-color: var(--success-text);">Manage Personas &rarr;</a>
+    </div>
+
+    <!-- Extension Promo Card -->
+    <div class="card" style="border-color: var(--outline-variant);">
+      <h3 style="font-size: 18px; margin-bottom: 8px;">Using the Chrome Extension?</h3>
+      <p style="color: var(--text-muted); margin-bottom: 16px;">Your account is automatically synced with the extension.</p>
+      <a href="https://chrome.google.com/webstore" target="_blank" class="btn btn-ghost">Download Extension &rarr;</a>
     </div>
 
   </div>

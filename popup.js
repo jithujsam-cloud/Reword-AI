@@ -11,6 +11,11 @@ let usageCount = 0;
 let licenseKey = "";
 let isPro = false;
 
+// V2: Persona & feedback state
+let userPersonas = [];
+let activePersonaId = null;
+let lastRewriteData = null; // { originalText, rewrittenText, personaId }
+
 /**
  * Displays an inline error banner on the current visible screen.
  * @param {string} message - The error message to display.
@@ -103,7 +108,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // Hide all screens explicitly first
   screenMain.classList.add("hidden");
   
-  chrome.storage.local.get(["supabase_session", "supabase_user_id", "user_email", "plan", "rewrites_used", "rewrites_limit", "payment_status", "licenseKey"], async (result) => {
+  chrome.storage.local.get(["supabase_session", "supabase_user_id", "user_email", "plan", "rewrites_used", "rewrites_limit", "payment_status", "licenseKey", "full_name"], async (result) => {
     supabaseUserId = result.supabase_user_id;
     userEmail = result.user_email;
     
@@ -146,7 +151,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // 3. Listen for AUTH_SUCCESS or SESSION_FROM_WEBSITE messages
   chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     if (message.type === 'AUTH_SUCCESS') {
-      chrome.storage.local.get(["supabase_user_id", "user_email", "plan", "rewrites_used", "rewrites_limit", "payment_status", "licenseKey", "default_tone"], (result) => {
+      chrome.storage.local.get(["supabase_user_id", "user_email", "plan", "rewrites_used", "rewrites_limit", "payment_status", "licenseKey", "default_tone", "full_name"], (result) => {
         supabaseUserId = result.supabase_user_id;
         userEmail = result.user_email;
         showScreen("screen-main");
@@ -170,7 +175,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
           showScreen("screen-main");
           // fetch user profile data and update UI
-          chrome.storage.local.get(["plan", "rewrites_used", "rewrites_limit", "payment_status", "licenseKey", "default_tone"], (result) => {
+          chrome.storage.local.get(["plan", "rewrites_used", "rewrites_limit", "payment_status", "licenseKey", "default_tone", "full_name"], (result) => {
             loadUserDataAndSupabase(result);
           });
         });
@@ -192,6 +197,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // 4. Setup Navigation Event Listeners
   document.getElementById("btn-goto-settings").addEventListener("click", () => showScreen("screen-settings"));
+  const btnAuthSettings = document.getElementById("btn-goto-settings-from-auth");
+  if (btnAuthSettings) btnAuthSettings.addEventListener("click", () => showScreen("screen-settings"));
   document.getElementById("btn-goto-settings-from-result").addEventListener("click", () => showScreen("screen-settings"));
   document.getElementById("btn-goto-settings-from-upgrade").addEventListener("click", () => showScreen("screen-settings"));
   document.getElementById("btn-back-settings").addEventListener("click", () => {
@@ -200,6 +207,11 @@ document.addEventListener("DOMContentLoaded", () => {
     } else {
       showScreen("screen-main");
     }
+  });
+
+  document.querySelectorAll(".header-avatar, .header-avatar-upg").forEach(el => {
+    el.style.cursor = "pointer";
+    el.addEventListener("click", () => showScreen("screen-settings"));
   });
 
   // Action Button Listeners
@@ -246,11 +258,15 @@ document.addEventListener("DOMContentLoaded", () => {
   thumbUp.addEventListener("click", () => {
     thumbUp.classList.add("active");
     thumbDown.classList.remove("active");
+    // V2: Log accepted feedback
+    logFeedback('accepted');
   });
 
   thumbDown.addEventListener("click", () => {
     thumbDown.classList.add("active");
     thumbUp.classList.remove("active");
+    // V2: Log rejected feedback
+    logFeedback('rejected');
   });
 
   editorInput.addEventListener("focus", () => {
@@ -258,6 +274,24 @@ document.addEventListener("DOMContentLoaded", () => {
   });
   editorInput.addEventListener("blur", () => {
     editorInput.style.transform = "scale(1.0)";
+  });
+
+  // V2: Manage personas link
+  document.getElementById("btn-manage-personas").addEventListener("click", () => {
+    chrome.tabs.create({ url: "https://clospect.online/personas.html" });
+  });
+
+  // V2: Persona selector change
+  document.getElementById("persona-select").addEventListener("change", (e) => {
+    const selected = e.target.selectedOptions[0];
+    activePersonaId = selected.value || null;
+  });
+
+  // V2: Character counter
+  editorInput.addEventListener("input", () => {
+    const count = editorInput.value.length;
+    const counter = document.querySelector('.char-count');
+    if (counter) counter.textContent = `${count} / 2000`;
   });
 });
 
@@ -272,8 +306,9 @@ function loadUserDataAndSupabase(result) {
   }
   
   updateUsageDisplay();
-  injectSettingsContent(userEmail, isPro);
+  injectSettingsContent(userEmail, isPro, result.full_name);
   fetchSupabaseData();
+  loadUserPersonas(); // V2
   
   // Step 5: Free User Hits Limit logic
   if (!isPro && usageCount >= rewritesLimit) {
@@ -296,7 +331,8 @@ async function fetchSupabaseData() {
         rewrites_used: userRow.rewrites_used,
         rewrites_limit: userRow.rewrites_limit,
         payment_status: userRow.payment_status,
-        default_tone: userRow.default_tone
+        default_tone: userRow.default_tone,
+        full_name: userRow.full_name
       });
       
       usageCount = userRow.rewrites_used;
@@ -304,7 +340,7 @@ async function fetchSupabaseData() {
       isPro = (userRow.plan === 'pro') || (licenseKeyInput.value && licenseKeyInput.value.trim().length >= 16);
       
       updateUsageDisplay();
-      injectSettingsContent(userEmail, isPro);
+      injectSettingsContent(userEmail, isPro, userRow.full_name);
       
       if (!isPro && usageCount >= rewritesLimit) {
         showScreen("screen-upgrade");
@@ -366,14 +402,17 @@ function handleDeAI() {
   // Show Loading overlay
   loadingOverlay.classList.remove("hidden");
 
-  chrome.storage.local.get(["default_tone"], (result) => {
-    const tone = result.default_tone || "Professional";
+  // V2: Get selected persona
+  const personaSelect = document.getElementById("persona-select");
+  const selectedOption = personaSelect.selectedOptions[0];
+  const personaId = selectedOption?.value || null;
+  const tone = selectedOption?.dataset.tone || "Professional";
 
-    // Send request to background.js
-    chrome.runtime.sendMessage(
-      { action: "rewriteText", text: originalText, tone: tone },
-      (response) => {
-        loadingOverlay.classList.add("hidden");
+  // Send request to background.js
+  chrome.runtime.sendMessage(
+    { action: "rewriteText", text: originalText, tone: tone, personaId: personaId },
+    (response) => {
+      loadingOverlay.classList.add("hidden");
 
       if (chrome.runtime.lastError) {
         showError("Could not connect to the background service. Try reloading the extension.");
@@ -402,6 +441,20 @@ function handleDeAI() {
         document.getElementById("result-original-text").textContent = originalText;
         document.getElementById("result-rewritten-text").textContent = response.rewrittenText;
 
+        // V2: Store rewrite data for feedback
+        lastRewriteData = {
+          originalText: originalText,
+          rewrittenText: response.rewrittenText,
+          personaId: response.personaId || personaId
+        };
+
+        // V2: Update the tone badge
+        const badgeEl = document.querySelector('.badge-prof');
+        if (badgeEl) {
+          const pName = selectedOption?.textContent || 'Professional';
+          badgeEl.textContent = pName.toUpperCase();
+        }
+
         clearError();
         showScreen("screen-result");
       } else {
@@ -409,7 +462,6 @@ function handleDeAI() {
         }
       }
     );
-  });
 }
 
 function handleReplace() {
@@ -464,8 +516,104 @@ function handleActivatePro() {
   }
 }
 
-function injectSettingsContent(email, isPremium) {
+// =============================================
+// V2: PERSONA LOADING
+// =============================================
+async function loadUserPersonas() {
+  if (!supabaseUserId) return;
+
+  try {
+    const { data, error } = await supabase
+      .from('personas')
+      .select('id, name, tone, is_default, style_fingerprint')
+      .eq('user_id', supabaseUserId)
+      .order('created_at', { ascending: true });
+
+    if (error) {
+      console.warn('[Reword] Could not load personas:', error.message);
+      return;
+    }
+
+    userPersonas = data || [];
+    renderPersonaSelector();
+  } catch (err) {
+    console.warn('[Reword] Persona load failed:', err.message);
+  }
+}
+
+function renderPersonaSelector() {
+  const select = document.getElementById('persona-select');
+  if (!select) return;
+
+  // Preserve current selection
+  const currentVal = select.value;
+
+  // Clear all options except the default
+  select.innerHTML = '<option value="" data-tone="Professional">Default (Professional)</option>';
+
+  userPersonas.forEach(p => {
+    const opt = document.createElement('option');
+    opt.value = p.id;
+    opt.dataset.tone = p.tone;
+    const trained = p.style_fingerprint ? ' ✓' : '';
+    opt.textContent = `${p.name}${trained}`;
+    if (p.is_default) opt.selected = true;
+    select.appendChild(opt);
+  });
+
+  // Restore previous selection if still valid
+  if (currentVal && select.querySelector(`option[value="${currentVal}"]`)) {
+    select.value = currentVal;
+  }
+
+  // Set active persona
+  const selected = select.selectedOptions[0];
+  activePersonaId = selected?.value || null;
+}
+
+// =============================================
+// V2: FEEDBACK LOGGING
+// =============================================
+function logFeedback(signal) {
+  if (!lastRewriteData) return;
+
+  chrome.runtime.sendMessage({
+    action: "logFeedback",
+    signal: signal,
+    originalText: lastRewriteData.originalText,
+    rewrittenText: lastRewriteData.rewrittenText,
+    personaId: lastRewriteData.personaId
+  }, (response) => {
+    if (chrome.runtime.lastError) {
+      console.warn('[Reword] Feedback log failed:', chrome.runtime.lastError.message);
+      return;
+    }
+    if (response && response.success) {
+      console.log(`[Reword] Feedback logged: ${signal}`);
+    }
+  });
+}
+
+function injectSettingsContent(email, isPremium, fullName) {
   let settingsMain = document.querySelector('#screen-settings main');
+
+  // Update UI headers
+  let initials = "U";
+  let name = "User";
+  if (fullName) {
+    name = fullName.split(' ')[0];
+    let parts = fullName.split(' ').filter(p => p.length > 0);
+    initials = parts.length > 1 ? (parts[0][0] + parts[1][0]).toUpperCase() : parts[0].substring(0, 2).toUpperCase();
+  } else if (email) {
+    name = email.split('@')[0];
+    initials = email.substring(0, 2).toUpperCase();
+  }
+  name = name.charAt(0).toUpperCase() + name.slice(1);
+  const greetingEl = document.getElementById("main-greeting");
+  if (greetingEl) greetingEl.textContent = `Hey, ${name}`;
+  document.querySelectorAll(".header-avatar, .header-avatar-upg").forEach(el => {
+    el.textContent = initials;
+  });
   
   // Clear any dynamically added sections
   const oldProfile = document.getElementById("user-profile-section");
@@ -488,14 +636,14 @@ function injectSettingsContent(email, isPremium) {
     profileSection.className = "free-tier-card"; 
     
     // Extract initials from email or name
-    let initials = email ? email.substring(0, 2).toUpperCase() : "U";
-    let name = email ? email.split('@')[0] : "User";
+    let profileInitials = initials;
+    let profileName = fullName ? fullName : name;
     
     profileSection.innerHTML = `
       <div class="user-profile-header">
-        <div class="user-avatar">${initials}</div>
+        <div class="user-avatar">${profileInitials}</div>
         <div class="user-info-text">
-          <span class="user-info-name">${name}</span>
+          <span class="user-info-name">${profileName}</span>
           <span class="user-info-email">${email || ''}</span>
         </div>
       </div>
