@@ -141,9 +141,7 @@ function openCreateModal() {
   document.getElementById('persona-default').checked = personas.length === 0;
   document.getElementById('btn-train-persona').textContent = 'Train & Save Persona';
 
-  // Reset tone
-  document.querySelectorAll('.tone-chip').forEach(c => c.classList.remove('active'));
-  document.querySelector('.tone-chip[data-tone="Professional"]').classList.add('active');
+
 
   // Reset samples
   sampleCount = 3;
@@ -166,10 +164,7 @@ function openEditModal(id) {
   document.getElementById('persona-default').checked = p.is_default;
   document.getElementById('btn-train-persona').textContent = 'Retrain & Save';
 
-  // Set tone
-  document.querySelectorAll('.tone-chip').forEach(c => c.classList.remove('active'));
-  const toneChip = document.querySelector(`.tone-chip[data-tone="${p.tone}"]`);
-  if (toneChip) toneChip.classList.add('active');
+
 
   // Set samples
   const samples = p.training_samples || [];
@@ -226,8 +221,7 @@ function getSampleValues() {
 }
 
 function getSelectedTone() {
-  const active = document.querySelector('.tone-chip.active');
-  return active ? active.dataset.tone : 'Professional';
+  return 'Professional'; // Hardcoded since we removed the tone selector
 }
 
 // =============================================
@@ -490,13 +484,7 @@ document.getElementById('btn-delete-close').addEventListener('click', closeDelet
 document.getElementById('btn-delete-cancel').addEventListener('click', closeDeleteModal);
 document.getElementById('btn-delete-confirm').addEventListener('click', confirmDelete);
 
-// Tone chip selector
-document.querySelectorAll('.tone-chip').forEach(chip => {
-  chip.addEventListener('click', () => {
-    document.querySelectorAll('.tone-chip').forEach(c => c.classList.remove('active'));
-    chip.classList.add('active');
-  });
-});
+
 
 // Add sample button
 document.getElementById('btn-add-sample').addEventListener('click', () => {

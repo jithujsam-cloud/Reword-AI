@@ -209,6 +209,7 @@ a {
   border: 1px solid var(--border-color);
   border-radius: var(--radius-card);
   padding: 32px;
+  margin-bottom: 24px;
   /* Flat depth: no heavy shadow, relying on border and bg color */
 }
 
@@ -1012,7 +1013,7 @@ a {
 
 /* Nav tab bar for dashboard pages */
 .dashboard-nav {
-  display: flex;
+  display: inline-flex;
   gap: 4px;
   background: var(--surface-container-low);
   padding: 4px;
