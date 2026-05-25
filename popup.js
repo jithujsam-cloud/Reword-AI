@@ -94,44 +94,101 @@ function showScreen(screenId) {
   screenSettings.classList.add("hidden");
   screenUpgrade.classList.add("hidden");
   screenAuth.classList.add("hidden");
-  
+
   document.getElementById(screenId).classList.remove("hidden");
+}
+
+function showAuthPrompt() {
+  showScreen("screen-auth");
+}
+
+function showMainScreen() {
+  showScreen("screen-main");
+}
+
+const initExtension = async () => {
+  try {
+    // Always verify with Supabase first
+    // Never trust local storage alone
+    const { data: { session }, error } =
+      await supabase.auth.getSession()
+
+    if (error || !session || !session.user) {
+      // No valid session — clear everything
+      // and show auth prompt
+      await chrome.storage.local.clear()
+      showAuthPrompt()
+      return
+    }
+
+    // Valid session exists
+    // Refresh local storage with fresh data
+    await chrome.storage.local.set({
+      supabase_user_id: session.user.id,
+      user_email: session.user.email
+    })
+
+    // Fetch latest user data from DB
+    const { data: userData } = await supabase
+      .from('users')
+      .select('*')
+      .eq('supabase_user_id', session.user.id)
+      .single()
+
+    if (userData) {
+      await chrome.storage.local.set({
+        plan: userData.plan,
+        rewrites_used: userData.rewrites_used,
+        rewrites_limit: userData.rewrites_limit,
+        payment_status: userData.payment_status
+      })
+      showMainScreen()
+
+      supabaseUserId = session.user.id;
+      userEmail = session.user.email;
+      loadUserDataAndSupabase({
+        plan: userData.plan,
+        rewrites_used: userData.rewrites_used,
+        rewrites_limit: userData.rewrites_limit,
+        payment_status: userData.payment_status
+      });
+    } else {
+      // User exists in auth but not in DB
+      // Create their row
+      await supabase.from('users').insert({
+        supabase_user_id: session.user.id,
+        email: session.user.email,
+        plan: 'free',
+        rewrites_used: 0,
+        rewrites_limit: 3,
+        payment_status: 'inactive'
+      })
+      showMainScreen()
+
+      supabaseUserId = session.user.id;
+      userEmail = session.user.email;
+      loadUserDataAndSupabase({
+        plan: 'free',
+        rewrites_used: 0,
+        rewrites_limit: 3,
+        payment_status: 'inactive'
+      });
+    }
+
+  } catch (err) {
+    // Any error — fail safe to auth prompt
+    await chrome.storage.local.clear()
+    showAuthPrompt()
+  }
 }
 
 document.addEventListener("DOMContentLoaded", () => {
   // CRITICAL RULE 1: NOTHING renders before auth check completes.
   // Hide all screens explicitly first
   screenMain.classList.add("hidden");
-  
-  chrome.storage.local.get(["supabase_session", "supabase_user_id", "user_email", "plan", "rewrites_used", "rewrites_limit", "payment_status", "licenseKey"], async (result) => {
-    supabaseUserId = result.supabase_user_id;
-    userEmail = result.user_email;
-    
-    let session = result.supabase_session;
-    if (session) {
-      // Set the session for future api calls, but don't block UI on getting it back
-      supabase.auth.setSession({
-        access_token: session.access_token,
-        refresh_token: session.refresh_token
-      }).catch(console.error);
-    }
-    
-    if (supabaseUserId && session) {
-      showScreen("screen-main");
-      loadUserDataAndSupabase(result);
-    } else {
-      showScreen("screen-auth");
-      // Debug info
-      const dbg = document.getElementById('debug-info') || document.createElement('div');
-      dbg.id = 'debug-info';
-      dbg.style.fontSize = '10px';
-      dbg.style.color = '#999';
-      dbg.style.textAlign = 'center';
-      dbg.style.marginTop = '10px';
-      dbg.textContent = 'Storage keys: ' + Object.keys(result).join(', ');
-      document.querySelector('#screen-auth .content').appendChild(dbg);
-    }
-  });
+
+  // Run auth check
+  initExtension();
 
   // 2. Auth Page Navigation Listener
   document.getElementById("btn-auth-signin").addEventListener("click", () => {
