@@ -1,9 +1,9 @@
 import { supabase } from './auth.js';
+import { OPENAI_API_KEY } from './config.js';
 
 // =============================================
 // CONFIG
 // =============================================
-const OPENAI_API_KEY = 'YOUR_API_KEY_HERE';
 const OPENAI_MODEL = 'gpt-4o-mini';
 const MAX_SAMPLES = 5;
 const MIN_SAMPLES = 3;
